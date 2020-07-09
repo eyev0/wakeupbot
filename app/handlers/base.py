@@ -16,7 +16,7 @@ async def cmd_start(message: types.Message, user: User):
     await message.answer(
         _(
             "Hello, {user}!\n\n"
-            "Send me '-' to start your sleep, '+' to finish sleep record\n"
+            "Send me '-' when you go to sleep, and '+' when you wake up :) \n"
             "Send '!' to view your weekly stats, '!m' - monthly stats\n"
             "('!m -1' to view stats on previous month etc.)\n\n"
             "Send /help to see list of my commands.\n"

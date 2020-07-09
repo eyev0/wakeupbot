@@ -38,7 +38,6 @@ install-hooks:
 install-db: docker-db
 	sleep 3
 	$(shell mkdir ./migrations/versions)
-	$(MAKE) migration message="init_db"
 	$(MAKE) upgrade-db
 	$(MAKE) docker-db-stop
 
