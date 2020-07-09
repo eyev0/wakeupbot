@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-09 15:28+0300\n"
+"POT-Creation-Date: 2020-07-09 19:19+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -21,74 +21,125 @@ msgstr ""
 
 #: app/handlers/base.py:17
 msgid ""
-"Hello, {user}.\n"
+"Hello, {user}!\n"
+"\n"
+"Send me '-' to start your sleep, '+' to finish sleep record\n"
+"Send '!' to view your weekly stats, '!m' - monthly stats\n"
+"('!m -1' to view stats on previous month etc.)\n"
+"\n"
 "Send /help to see list of my commands.\n"
-"You can also change language by sending /settings command."
+"You can change language in /settings menu :)"
 msgstr ""
-
-#: app/handlers/base.py:31
-msgid "Here's a list of my commands:"
-msgstr ""
-
-#: app/handlers/base.py:32
-msgid "{command} - Start conversation with bot"
-msgstr ""
-
-#: app/handlers/base.py:33
-msgid "{command} - Show this message"
-msgstr ""
+"Привет, {user}!\n"
+"\n"
+"Отправляй мне '-' когда засыпаешь, а '+' с утра\n"
+"'!' - статистика за неделю, '!м' - за месяц\n"
+"('!м -1', '!м -2' - за предыдущие месяцы)\n"
+"\n"
+"Пиши /help, чтобы увидеть список команд, если что забыл(а) :)\n"
+"Можешь поменять язык в меню /settings"
 
 #: app/handlers/base.py:34
+msgid "Here's list of my commands:"
+msgstr "Список моих комманд:"
+
+#: app/handlers/base.py:35
+msgid "\"-\" - Start sleeping"
+msgstr "\"-\" - Начать сон"
+
+#: app/handlers/base.py:36
+msgid "\"+\" - Record your sleep"
+msgstr "\"+\" - Закончить сон"
+
+#: app/handlers/base.py:37
+msgid "\"!\" - View weekly stats"
+msgstr "\"!\" - Статистика за неделю"
+
+#: app/handlers/base.py:38
+msgid "\"!m\" - View monthly stats"
+msgstr "\"!m\" - Статистика за месяц"
+
+#: app/handlers/base.py:39
+msgid "\"!m -1\" - View previous month's stats"
+msgstr "\"!m -1\" - Статистика предыдущего месяца"
+
+#: app/handlers/base.py:40
+msgid "{command} - Start conversation with bot"
+msgstr "{command} - Приветствие от меня!"
+
+#: app/handlers/base.py:41
+msgid "{command} - Show this message"
+msgstr "{command} - Показать это сообщение"
+
+#: app/handlers/base.py:42
 msgid "{command} - User settings"
-msgstr ""
+msgstr "{command} - Настройки"
 
 #: app/handlers/chat_settings.py:46
 msgid "Choose chat language"
-msgstr ""
+msgstr "Выбери язык"
 
 #: app/handlers/chat_settings.py:73
 msgid "Language changed to {new_language}"
-msgstr ""
+msgstr "Язык сменен на {new_language}"
 
 #: app/handlers/chat_settings.py:88
 msgid "Do not disturb mode {mode}"
-msgstr ""
+msgstr "Не беспокоить {mode}"
 
 #: app/handlers/chat_settings.py:89
 msgid "switched on"
-msgstr ""
+msgstr "включен"
 
 #: app/handlers/chat_settings.py:89
 msgid "switched off"
-msgstr ""
+msgstr "выключен"
 
 #: app/handlers/chat_settings.py:103
 msgid "Settings saved"
-msgstr ""
+msgstr "Настройки сохранены"
 
-#: app/handlers/sleep_tracker.py:19
+#: app/handlers/sleep_tracker.py:22
 msgid "Good night.."
-msgstr ""
-
-#: app/handlers/sleep_tracker.py:35
-msgid "Good morning!"
-msgstr ""
-
-#: app/handlers/sleep_tracker.py:36
-msgid "Your sleep started at "
-msgstr ""
-
-#: app/handlers/sleep_tracker.py:37
-msgid "Ended at "
-msgstr ""
-
-#: app/handlers/sleep_tracker.py:38
-msgid "Sleep time: "
-msgstr ""
+msgstr "Спокойной ночи.."
 
 #: app/handlers/sleep_tracker.py:40
-msgid "{hours} hours {minutes} minutes"
-msgstr ""
+msgid "Good morning!"
+msgstr "Доброе утро!"
+
+#: app/handlers/sleep_tracker.py:41
+msgid "Your sleep started "
+msgstr "Сон начался "
+
+#: app/handlers/sleep_tracker.py:45
+msgid "Ended "
+msgstr "Закончился "
+
+#: app/handlers/sleep_tracker.py:49
+msgid "Sleep time: "
+msgstr "Время сна: "
+
+#: app/handlers/sleep_tracker.py:51 app/handlers/sleep_tracker.py:112
+#: app/handlers/sleep_tracker.py:134 app/handlers/sleep_tracker.py:170
+#: app/handlers/sleep_tracker.py:188
+msgid "{hours}h {minutes}m {seconds}s"
+msgstr "{hours}ч {minutes}м {seconds}с"
+
+#: app/handlers/sleep_tracker.py:76
+msgid "Wrong option! - {option}"
+msgstr "Неправильная опция! - {option}"
+
+#: app/handlers/sleep_tracker.py:125
+msgid "Monthly stats for {month}: "
+msgstr "Статистика сна от месяца {month}: "
+
+#: app/handlers/sleep_tracker.py:132 app/handlers/sleep_tracker.py:186
+msgid "Average sleep hours:"
+msgstr "В среднем часов сна:"
+
+#: app/handlers/sleep_tracker.py:182
+msgid "Weekly stats: "
+msgstr "Статистика за неделю: "
 
 #: app/handlers/superuser.py:26
 msgid "Successfuly changed is_superuser to {is_superuser} for user {user}"
@@ -100,24 +151,24 @@ msgstr ""
 
 #: app/utils/chat_settings.py:24
 msgid "Personal settings"
-msgstr ""
+msgstr "Настройки"
 
 #: app/utils/chat_settings.py:29
 msgid "{status} Do not disturb"
-msgstr ""
+msgstr "{status} Не беспокоить"
 
 #: app/utils/chat_settings.py:39 app/utils/chat_settings.py:81
 msgid "{flag} Language"
-msgstr ""
+msgstr "{flag} Язык"
 
 #: app/utils/chat_settings.py:49 app/utils/chat_settings.py:91
 msgid "Done"
-msgstr ""
+msgstr "Готово"
 
 #: app/utils/chat_settings.py:64
 msgid "Settings for chat {chat_title}"
-msgstr ""
+msgstr "Настройки чата для {chat_title}"
 
 #: app/utils/chat_settings.py:71
 msgid "{status} Join filter"
-msgstr ""
+msgstr "{status} Джоин Фильтр"

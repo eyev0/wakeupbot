@@ -15,9 +15,12 @@ async def cmd_start(message: types.Message, user: User):
 
     await message.answer(
         _(
-            "Hello, {user}.\n"
+            "Hello, {user}!\n\n"
+            "Send me '-' to start your sleep, '+' to finish sleep record\n"
+            "Send '!' to view your weekly stats, '!m' - monthly stats\n"
+            "('!m -1' to view stats on previous month etc.)\n\n"
             "Send /help to see list of my commands.\n"
-            "You can also change language by sending /settings command."
+            "You can change language in /settings menu :)"
         ).format(user=hbold(message.from_user.full_name),)
     )
 
@@ -28,7 +31,12 @@ async def cmd_start(message: types.Message, user: User):
 async def cmd_help(message: types.Message, user: User):
     logger.info("User {user} requested help from bot", user=message.from_user.id)
     text = [
-        hbold(_("Here's a list of my commands:")),
+        hbold(_("Here's list of my commands:")),
+        _('"-" - Start sleeping'),
+        _('"+" - Record your sleep'),
+        _('"!" - View weekly stats'),
+        _('"!m" - View monthly stats'),
+        _('"!m -1" - View previous month\'s stats'),
         _("{command} - Start conversation with bot").format(command="/start"),
         _("{command} - Show this message").format(command="/help"),
         _("{command} - User settings").format(command="/settings"),

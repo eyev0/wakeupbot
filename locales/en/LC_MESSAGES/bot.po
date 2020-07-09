@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-09 15:28+0300\n"
+"POT-Creation-Date: 2020-07-09 19:19+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -20,24 +20,49 @@ msgstr ""
 
 #: app/handlers/base.py:17
 msgid ""
-"Hello, {user}.\n"
+"Hello, {user}!\n"
+"\n"
+"Send me '-' to start your sleep, '+' to finish sleep record\n"
+"Send '!' to view your weekly stats, '!m' - monthly stats\n"
+"('!m -1' to view stats on previous month etc.)\n"
+"\n"
 "Send /help to see list of my commands.\n"
-"You can also change language by sending /settings command."
-msgstr ""
-
-#: app/handlers/base.py:31
-msgid "Here's a list of my commands:"
-msgstr ""
-
-#: app/handlers/base.py:32
-msgid "{command} - Start conversation with bot"
-msgstr ""
-
-#: app/handlers/base.py:33
-msgid "{command} - Show this message"
+"You can change language in /settings menu :)"
 msgstr ""
 
 #: app/handlers/base.py:34
+msgid "Here's list of my commands:"
+msgstr ""
+
+#: app/handlers/base.py:35
+msgid "\"-\" - Start sleeping"
+msgstr ""
+
+#: app/handlers/base.py:36
+msgid "\"+\" - Record your sleep"
+msgstr ""
+
+#: app/handlers/base.py:37
+msgid "\"!\" - View weekly stats"
+msgstr ""
+
+#: app/handlers/base.py:38
+msgid "\"!m\" - View monthly stats"
+msgstr ""
+
+#: app/handlers/base.py:39
+msgid "\"!m -1\" - View previous month's stats"
+msgstr ""
+
+#: app/handlers/base.py:40
+msgid "{command} - Start conversation with bot"
+msgstr ""
+
+#: app/handlers/base.py:41
+msgid "{command} - Show this message"
+msgstr ""
+
+#: app/handlers/base.py:42
 msgid "{command} - User settings"
 msgstr ""
 
@@ -65,28 +90,46 @@ msgstr ""
 msgid "Settings saved"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:19
+#: app/handlers/sleep_tracker.py:22
 msgid "Good night.."
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:35
+#: app/handlers/sleep_tracker.py:40
 msgid "Good morning!"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:36
-msgid "Your sleep started at "
+#: app/handlers/sleep_tracker.py:41
+msgid "Your sleep started "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:37
-msgid "Ended at "
+#: app/handlers/sleep_tracker.py:45
+msgid "Ended "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:38
+#: app/handlers/sleep_tracker.py:49
 msgid "Sleep time: "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:40
-msgid "{hours} hours {minutes} minutes"
+#: app/handlers/sleep_tracker.py:51 app/handlers/sleep_tracker.py:112
+#: app/handlers/sleep_tracker.py:134 app/handlers/sleep_tracker.py:170
+#: app/handlers/sleep_tracker.py:188
+msgid "{hours}h {minutes}m {seconds}s"
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:76
+msgid "Wrong option! - {option}"
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:125
+msgid "Monthly stats for {month}: "
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:132 app/handlers/sleep_tracker.py:186
+msgid "Average sleep hours:"
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:182
+msgid "Weekly stats: "
 msgstr ""
 
 #: app/handlers/superuser.py:26
@@ -120,3 +163,43 @@ msgstr ""
 #: app/utils/chat_settings.py:71
 msgid "{status} Join filter"
 msgstr ""
+
+#~ msgid ""
+#~ "Hello, {user}.\n"
+#~ "Send /help to see list of my commands.\n"
+#~ "You can also change language by sending /settings command."
+#~ msgstr ""
+
+#~ msgid "Here's a list of my commands:"
+#~ msgstr ""
+
+#~ msgid "Your sleep started at "
+#~ msgstr ""
+
+#~ msgid "Ended at "
+#~ msgstr ""
+
+#~ msgid "{hours} hours {minutes} minutes"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Hello, {user}!\n"
+#~ "\n"
+#~ "Send me  to  your sleep,  to  sleep record\n"
+#~ "Send  to view your weekly stats,  - monthly stats\n"
+#~ "( to view stats on previous month etc.)\n"
+#~ "\n"
+#~ "Send /help to see list of my commands.\n"
+#~ "You can also change language by sending /settings command."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Hello, {user}!\n"
+#~ "\n"
+#~ "Send me '-' to start your sleep, '+' to finish sleep record\n"
+#~ "Send '!' to view your weekly stats, '!m' - monthly stats\n"
+#~ "('!m -1' to view stats on previous month etc.)\n"
+#~ "\n"
+#~ "Send /help to see list of my commands.\n"
+#~ "You can also change language by sending /settings command."
+#~ msgstr ""
