@@ -1,6 +1,6 @@
-import datetime
 from typing import List, Union
 
+import pendulum
 import sqlalchemy as sa
 from aiogram import Dispatcher
 from aiogram.utils.executor import Executor
@@ -35,8 +35,8 @@ class TimedBaseModel(BaseModel):
     created_at = db.Column(db.DateTime(True), server_default=db.func.now())
     updated_at = db.Column(
         db.DateTime(True),
-        default=datetime.datetime.utcnow,
-        onupdate=datetime.datetime.utcnow,
+        default=pendulum.now,
+        onupdate=pendulum.now,
         server_default=db.func.now(),
     )
 

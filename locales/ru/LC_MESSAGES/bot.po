@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-09 13:39+0300\n"
+"POT-Creation-Date: 2020-07-09 15:28+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -42,28 +42,52 @@ msgstr ""
 msgid "{command} - User settings"
 msgstr ""
 
-#: app/handlers/chat_settings.py:48
+#: app/handlers/chat_settings.py:46
 msgid "Choose chat language"
 msgstr ""
 
-#: app/handlers/chat_settings.py:75
+#: app/handlers/chat_settings.py:73
 msgid "Language changed to {new_language}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:90
+#: app/handlers/chat_settings.py:88
 msgid "Do not disturb mode {mode}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:91
+#: app/handlers/chat_settings.py:89
 msgid "switched on"
 msgstr ""
 
-#: app/handlers/chat_settings.py:91
+#: app/handlers/chat_settings.py:89
 msgid "switched off"
 msgstr ""
 
-#: app/handlers/chat_settings.py:105
+#: app/handlers/chat_settings.py:103
 msgid "Settings saved"
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:19
+msgid "Good night.."
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:35
+msgid "Good morning!"
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:36
+msgid "Your sleep started at "
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:37
+msgid "Ended at "
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:38
+msgid "Sleep time: "
+msgstr ""
+
+#: app/handlers/sleep_tracker.py:40
+msgid "{hours} hours {minutes} minutes"
 msgstr ""
 
 #: app/handlers/superuser.py:26

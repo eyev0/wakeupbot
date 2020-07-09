@@ -7,6 +7,7 @@ def setup(dispatcher: Dispatcher):
     logger.info("Configure filters...")
     from .has_permissions import BotHasPermissions, HasPermissions
     from .superuser import IsSuperuserFilter
+    from .sleep_tracker import UserAwakeFilter
 
     text_messages = [
         dispatcher.message_handlers,
@@ -19,3 +20,4 @@ def setup(dispatcher: Dispatcher):
     dispatcher.filters_factory.bind(HasPermissions, event_handlers=text_messages)
     dispatcher.filters_factory.bind(BotHasPermissions, event_handlers=text_messages)
     dispatcher.filters_factory.bind(IsSuperuserFilter)
+    dispatcher.filters_factory.bind(UserAwakeFilter)

@@ -2,8 +2,6 @@ from contextlib import suppress
 
 from aiogram import types
 from aiogram.dispatcher.filters.filters import OrFilter
-from aiogram.dispatcher.filters.state import default_state
-from aiogram.types import ContentTypes, ForceReply
 from aiogram.utils.exceptions import MessageCantBeDeleted, MessageNotModified
 from loguru import logger
 

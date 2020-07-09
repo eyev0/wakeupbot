@@ -11,14 +11,11 @@ class User(TimedBaseModel):
     id = db.Column(db.Integer, primary_key=True, index=True, unique=True)
     username = db.Column(db.String)
 
-    locale = db.Column(db.String, default="ru")
+    locale = db.Column(db.String)
     is_superuser = db.Column(db.Boolean, server_default=expression.false())
 
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
-    location = db.Column(db.String)
-
-    lot_limit = db.Column(db.Integer, server_default="500")
 
     conversation_started = db.Column(db.Boolean, server_default=expression.true())
     active = db.Column(db.Boolean, server_default=expression.true())
