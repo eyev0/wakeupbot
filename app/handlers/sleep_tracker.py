@@ -176,7 +176,7 @@ async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
         )
 
     avg_sleep = Duration(
-        seconds=sum(map(lambda x: x.in_seconds(), intervals)) / len(intervals)
+        seconds=sum(map(lambda x: x.in_seconds(), intervals)) / max(len(intervals), 1)
     )
     text = [
         hbold(_("Weekly stats: ")),
