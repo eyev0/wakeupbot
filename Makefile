@@ -36,10 +36,10 @@ install-hooks:
 	$(py) pre-commit install
 
 install-db: docker-db
-	sleep 2
+	sleep 3
 	$(shell mkdir ./migrations/versions)
 	$(MAKE) migration message="init_db"
-	$(MAKE) migrate
+	$(MAKE) upgrade-db
 	$(MAKE) docker-db-stop
 
 install-texts:
@@ -90,6 +90,9 @@ pybabel-update:
 		--update-header-comment \
 		-i ${LOCALES_DIR}/${LOCALES_DOMAIN}.pot
 
+texts: texts-update texts-compile
+	@echo "$@ finished!"
+
 texts-update: pybabel-extract pybabel-update
 
 texts-compile:
@@ -101,16 +104,16 @@ texts-create-language:
 alembic:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic ${args}
 
-migrate:
+upgrade-db:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic upgrade head
 
 migration:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic revision --autogenerate -m "${message}"
 
-downgrade:
+downgrade-db:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic downgrade -1
 
-_beforeStart: docker-db migrate requirements
+_beforeStart: docker-db upgrade-db texts requirements
 
 _app:
 	$(py) python -m core
