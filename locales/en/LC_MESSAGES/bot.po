@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-09 19:56+0300\n"
+"POT-Creation-Date: 2020-07-09 22:42+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -90,45 +90,36 @@ msgstr ""
 msgid "Settings saved"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:22
+#: app/handlers/sleep_tracker.py:24
 msgid "Good night.."
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:40
+#: app/handlers/sleep_tracker.py:42
 msgid "Good morning!"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:41
-msgid "Your sleep started "
+#: app/handlers/sleep_tracker.py:43
+msgid "Your sleep:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:45
-msgid "Ended "
+#: app/handlers/sleep_tracker.py:49 app/handlers/sleep_tracker.py:115
+#: app/handlers/sleep_tracker.py:150 app/handlers/sleep_tracker.py:170
+msgid "{hours}h {minutes}min"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:49
-msgid "Sleep time: "
-msgstr ""
-
-#: app/handlers/sleep_tracker.py:51 app/handlers/sleep_tracker.py:112
-#: app/handlers/sleep_tracker.py:134 app/handlers/sleep_tracker.py:170
-#: app/handlers/sleep_tracker.py:188
-msgid "{hours}h {minutes}m {seconds}s"
-msgstr ""
-
-#: app/handlers/sleep_tracker.py:76
+#: app/handlers/sleep_tracker.py:74
 msgid "Wrong option! - {option}"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:125
+#: app/handlers/sleep_tracker.py:106
 msgid "Monthly stats for {month}: "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:132 app/handlers/sleep_tracker.py:186
-msgid "Average sleep hours:"
+#: app/handlers/sleep_tracker.py:113 app/handlers/sleep_tracker.py:148
+msgid "Average sleep hours per day:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:182
+#: app/handlers/sleep_tracker.py:144
 msgid "Weekly stats: "
 msgstr ""
 
@@ -163,3 +154,21 @@ msgstr ""
 #: app/utils/chat_settings.py:71
 msgid "{status} Join filter"
 msgstr ""
+
+#~ msgid "{hours}h {minutes}m"
+#~ msgstr ""
+
+#~ msgid "Your sleep started "
+#~ msgstr ""
+
+#~ msgid "Ended "
+#~ msgstr ""
+
+#~ msgid "Sleep time: "
+#~ msgstr ""
+
+#~ msgid "{hours}h {minutes}m {seconds}s"
+#~ msgstr ""
+
+#~ msgid "Average sleep hours:"
+#~ msgstr ""

@@ -1,3 +1,5 @@
+from typing import List
+
 import pendulum
 from aiogram import types
 from aiogram.utils.markdown import hbold, hitalic
@@ -25,33 +27,27 @@ async def sleep_start(message: types.Message, user: User):
 @dp.message_handler(text="+", user_awake=False)
 async def sleep_end(message: types.Message, user: User, chat: Chat):
     logger.info("User {user} is waking up now", user=message.from_user.id)
-    rec: SleepRecord = await SleepRecord.query.where(
+    record: SleepRecord = await SleepRecord.query.where(
         and_(SleepRecord.user_id == user.id, SleepRecord.check_wakeup == False)  # noqa
     ).gino.first()
-    record_id = rec.id
-    await rec.update(check_wakeup=True).apply()
-    rec: SleepRecord = await SleepRecord.get(record_id)
+    record_id = record.id
+    await record.update(check_wakeup=True).apply()
+    record: SleepRecord = await SleepRecord.get(record_id)
 
-    start_timedate = rec.created_at
-    end_timedate = rec.updated_at
-    sleep_time = Period(start_timedate, end_timedate)
+    interval = Period(record.created_at, record.updated_at).as_interval()
+    dt_created_at = pendulum.instance(record.created_at)
+    dt_updated_at = pendulum.instance(record.updated_at)
 
     text = [
         hbold(_("Good morning!")),
-        _("Your sleep started ")
+        _("Your sleep:"),
+        f"{datetime_fmtr.format(dt_created_at, 'D MMMM, dd HH:mm:ss', chat.language)}"
+        + " - "
+        + f"{datetime_fmtr.format(dt_updated_at, 'D MMMM, dd HH:mm:ss', chat.language)}"
+        + " -- "
         + hbold(
-            f"{datetime_fmtr.format(start_timedate, 'D MMMM, HH:mm:ss', chat.language)}"
-        ),
-        _("Ended ")
-        + hbold(
-            f"{datetime_fmtr.format(end_timedate, 'D MMMM, HH:mm:ss', chat.language)}"
-        ),
-        _("Sleep time: ")
-        + hbold(
-            _("{hours}h {minutes}m {seconds}s").format(
-                hours=sleep_time.hours,
-                minutes=sleep_time.minutes,
-                seconds=sleep_time.seconds,
+            _("{hours}h {minutes}min").format(
+                hours=interval.hours, minutes=interval.minutes,
             )
         ),
     ]
@@ -71,15 +67,17 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     args = args[-1] if args else ""
     if args:
         try:
-            month_diff = int(args)
+            month_diff = int(args) % -12
+            year_diff = int(int(args) / -12)
         except ValueError:
             await message.answer(_("Wrong option! - {option}".format(option=args)))
             return
     else:
         month_diff = 0
+        year_diff = 0
 
     now = pendulum.now()
-    date = DateTime(year=now.year, month=now.month + month_diff, day=1)
+    date = DateTime(year=now.year + year_diff, month=now.month + month_diff, day=1)
 
     start = now.replace(
         month=date.month, day=1, hour=0, minute=0, second=0, microsecond=0
@@ -92,33 +90,19 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
         second=0,
         microsecond=0,
     )
-    sleep_records = await SleepRecord.query.where(
-        and_(SleepRecord.created_at >= start, SleepRecord.created_at <= end)
-    ).gino.all()
-
-    stats = []
-    intervals = []
-    for record in sleep_records:
-        day_of_month = datetime_fmtr.format(record.updated_at, "D MMMM", chat.language)
-        interval = Period(record.created_at, record.updated_at).as_interval()
-        intervals.append(interval)
-        stats.append(
-            f"{day_of_month} - "
-            + f"{datetime_fmtr.format(record.created_at, 'HH:mm:ss', chat.language)}"
-            + "-"
-            + f"{datetime_fmtr.format(record.updated_at, 'HH:mm:ss', chat.language)}"
-            + " - "
-            + hbold(
-                _("{hours}h {minutes}m {seconds}s").format(
-                    hours=interval.hours,
-                    minutes=interval.minutes,
-                    seconds=interval.seconds,
-                )
-            )
+    sleep_records = (
+        await SleepRecord.query.where(
+            and_(SleepRecord.created_at >= start, SleepRecord.created_at <= end)
         )
+        .order_by(SleepRecord.created_at)
+        .gino.all()
+    )
 
-    avg_sleep = Duration(
-        seconds=sum(map(lambda x: x.in_seconds(), intervals)) / max(len(intervals), 1)
+    explicit = [x for x in explicit_stats(sleep_records, chat.language)]
+    by_day = [x for x in stats_by_day(sleep_records, chat.language)]
+
+    avg_sleep_per_day = Duration(
+        seconds=sum(map(lambda x: x.in_seconds(), by_day)) / max(len(by_day), 1)
     )
     text = [
         hbold(
@@ -127,14 +111,12 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
             )
         ),
         "",
-        *stats,
+        *explicit,
         "",
-        hbold(_("Average sleep hours:")),
+        hbold(_("Average sleep hours per day:")),
         hbold(
-            _("{hours}h {minutes}m {seconds}s").format(
-                hours=avg_sleep.hours,
-                minutes=avg_sleep.minutes,
-                seconds=avg_sleep.seconds,
+            _("{hours}h {minutes}min").format(
+                hours=avg_sleep_per_day.hours, minutes=avg_sleep_per_day.minutes,
             )
         ),
     ]
@@ -150,46 +132,57 @@ async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
     monday_0am = now.replace(
         day=now.day - now.weekday(), hour=0, minute=0, second=0, microsecond=0
     )
-    sleep_records = await SleepRecord.query.where(
-        SleepRecord.created_at > monday_0am
-    ).gino.all()
+    sleep_records = (
+        await SleepRecord.query.where(SleepRecord.created_at > monday_0am)
+        .order_by(SleepRecord.created_at)
+        .gino.all()
+    )
 
-    stats = []
-    intervals = []
-    for record in sleep_records:
-        day_of_month = datetime_fmtr.format(record.updated_at, "D MMMM", chat.language)
-        interval = Period(record.created_at, record.updated_at).as_interval()
-        intervals.append(interval)
-        stats.append(
-            f"{day_of_month} - "
-            + f"{datetime_fmtr.format(record.created_at, 'HH:mm:ss', chat.language)}"
-            + "-"
-            + f"{datetime_fmtr.format(record.updated_at, 'HH:mm:ss', chat.language)}"
-            + " - "
-            + hbold(
-                _("{hours}h {minutes}m {seconds}s").format(
-                    hours=interval.hours,
-                    minutes=interval.minutes,
-                    seconds=interval.seconds,
-                )
-            )
-        )
+    explicit = [x for x in explicit_stats(sleep_records, chat.language)]
+    by_day = [x for x in stats_by_day(sleep_records, chat.language)]
 
-    avg_sleep = Duration(
-        seconds=sum(map(lambda x: x.in_seconds(), intervals)) / max(len(intervals), 1)
+    avg_sleep_per_day = Duration(
+        seconds=sum(map(lambda x: x.in_seconds(), by_day)) / max(len(by_day), 1)
     )
     text = [
         hbold(_("Weekly stats: ")),
         "",
-        *stats,
+        *explicit,
         "",
-        hbold(_("Average sleep hours:")),
+        hbold(_("Average sleep hours per day:")),
         hbold(
-            _("{hours}h {minutes}m {seconds}s").format(
-                hours=avg_sleep.hours,
-                minutes=avg_sleep.minutes,
-                seconds=avg_sleep.seconds,
+            _("{hours}h {minutes}min").format(
+                hours=avg_sleep_per_day.hours, minutes=avg_sleep_per_day.minutes,
             )
         ),
     ]
     await message.answer("\n".join(text))
+
+
+def explicit_stats(records: List[SleepRecord], language):
+    for record in records:
+        interval = Period(record.created_at, record.updated_at).as_interval()
+        dt_created_at = pendulum.instance(record.created_at)
+        dt_updated_at = pendulum.instance(record.updated_at)
+        yield (
+            f"{datetime_fmtr.format(dt_created_at, 'D MMMM, dd HH:mm:ss', language)}"
+            + " - "
+            + f"{datetime_fmtr.format(dt_updated_at, 'D MMMM, dd HH:mm:ss', language)}"
+            + " -- "
+            + hbold(
+                _("{hours}h {minutes}min").format(
+                    hours=interval.hours, minutes=interval.minutes,
+                )
+            )
+        )
+
+
+def stats_by_day(records: List[SleepRecord], language):
+    result = [Duration() for i in range(7)]
+    for record in records:
+        interval = Period(record.created_at, record.updated_at).as_interval()
+        dt_created_at = pendulum.instance(record.created_at)
+        day_of_week = int(datetime_fmtr.format(dt_created_at, "d"))
+        result[day_of_week] = result[day_of_week] + interval
+    for x in filter(lambda a: a.in_seconds() > 0, result):
+        yield x

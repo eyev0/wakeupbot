@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-09 19:56+0300\n"
+"POT-Creation-Date: 2020-07-09 22:42+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -99,45 +99,36 @@ msgstr "выключен"
 msgid "Settings saved"
 msgstr "Настройки сохранены"
 
-#: app/handlers/sleep_tracker.py:22
+#: app/handlers/sleep_tracker.py:24
 msgid "Good night.."
 msgstr "Спокойной ночи.."
 
-#: app/handlers/sleep_tracker.py:40
+#: app/handlers/sleep_tracker.py:42
 msgid "Good morning!"
 msgstr "Доброе утро!"
 
-#: app/handlers/sleep_tracker.py:41
-msgid "Your sleep started "
-msgstr "Сон начался "
+#: app/handlers/sleep_tracker.py:43
+msgid "Your sleep:"
+msgstr "Сон:"
 
-#: app/handlers/sleep_tracker.py:45
-msgid "Ended "
-msgstr "Закончился "
+#: app/handlers/sleep_tracker.py:49 app/handlers/sleep_tracker.py:115
+#: app/handlers/sleep_tracker.py:150 app/handlers/sleep_tracker.py:170
+msgid "{hours}h {minutes}min"
+msgstr "{hours}ч {minutes}мин"
 
-#: app/handlers/sleep_tracker.py:49
-msgid "Sleep time: "
-msgstr "Время сна: "
-
-#: app/handlers/sleep_tracker.py:51 app/handlers/sleep_tracker.py:112
-#: app/handlers/sleep_tracker.py:134 app/handlers/sleep_tracker.py:170
-#: app/handlers/sleep_tracker.py:188
-msgid "{hours}h {minutes}m {seconds}s"
-msgstr "{hours}ч {minutes}м {seconds}с"
-
-#: app/handlers/sleep_tracker.py:76
+#: app/handlers/sleep_tracker.py:74
 msgid "Wrong option! - {option}"
 msgstr "Неправильная опция! - {option}"
 
-#: app/handlers/sleep_tracker.py:125
+#: app/handlers/sleep_tracker.py:106
 msgid "Monthly stats for {month}: "
 msgstr "Статистика сна от месяца {month}: "
 
-#: app/handlers/sleep_tracker.py:132 app/handlers/sleep_tracker.py:186
-msgid "Average sleep hours:"
-msgstr "В среднем часов сна:"
+#: app/handlers/sleep_tracker.py:113 app/handlers/sleep_tracker.py:148
+msgid "Average sleep hours per day:"
+msgstr "Часов сна в день в среднем:"
 
-#: app/handlers/sleep_tracker.py:182
+#: app/handlers/sleep_tracker.py:144
 msgid "Weekly stats: "
 msgstr "Статистика за неделю: "
 
