@@ -26,6 +26,14 @@ def get_user_settings_markup(
             inline_keyboard=[
                 [
                     InlineKeyboardButton(
+                        text=_("Time zone"),
+                        callback_data=cb_user_settings.new(
+                            property="time_zone", value="set"
+                        ),
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
                         text=_("{status} Do not disturb").format(
                             status=FLAG_STATUS[user.do_not_disturb]
                         ),

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-10 10:53+0300\n"
+"POT-Creation-Date: 2020-07-10 13:19+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -66,27 +66,47 @@ msgstr ""
 msgid "{command} - User settings"
 msgstr ""
 
-#: app/handlers/chat_settings.py:46
-msgid "Choose chat language"
+#: app/handlers/chat_settings.py:42
+msgid "Your current time zone: {timezone}\n"
 msgstr ""
 
-#: app/handlers/chat_settings.py:73
-msgid "Language changed to {new_language}"
+#: app/handlers/chat_settings.py:43
+msgid "Enter your time zone ("
+msgstr ""
+
+#: app/handlers/chat_settings.py:44
+msgid "example: "
+msgstr ""
+
+#: app/handlers/chat_settings.py:62
+msgid "Wrong format! See examples above"
+msgstr ""
+
+#: app/handlers/chat_settings.py:64
+msgid "Time zone changed to {timezone}"
 msgstr ""
 
 #: app/handlers/chat_settings.py:88
+msgid "Choose chat language"
+msgstr ""
+
+#: app/handlers/chat_settings.py:115
+msgid "Language changed to {new_language}"
+msgstr ""
+
+#: app/handlers/chat_settings.py:130
 msgid "Do not disturb mode {mode}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:89
+#: app/handlers/chat_settings.py:131
 msgid "switched on"
 msgstr ""
 
-#: app/handlers/chat_settings.py:89
+#: app/handlers/chat_settings.py:131
 msgid "switched off"
 msgstr ""
 
-#: app/handlers/chat_settings.py:103
+#: app/handlers/chat_settings.py:145
 msgid "Settings saved"
 msgstr ""
 
@@ -102,24 +122,24 @@ msgstr ""
 msgid "Your sleep:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:48 app/handlers/sleep_tracker.py:124
-#: app/handlers/sleep_tracker.py:162 app/utils/sleep_tracker.py:25
+#: app/handlers/sleep_tracker.py:48 app/handlers/sleep_tracker.py:116
+#: app/handlers/sleep_tracker.py:155 app/utils/sleep_tracker.py:47
 msgid "{hours}h {minutes}min"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:75
+#: app/handlers/sleep_tracker.py:69
 msgid "Wrong option! - {option}"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:115
+#: app/handlers/sleep_tracker.py:107
 msgid "Monthly stats for {month_year}: "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:122 app/handlers/sleep_tracker.py:160
+#: app/handlers/sleep_tracker.py:114 app/handlers/sleep_tracker.py:153
 msgid "Average sleep hours per day:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:156
+#: app/handlers/sleep_tracker.py:149
 msgid "Weekly stats: "
 msgstr ""
 
@@ -136,21 +156,25 @@ msgid "Personal settings"
 msgstr ""
 
 #: app/utils/chat_settings.py:29
+msgid "Time zone"
+msgstr ""
+
+#: app/utils/chat_settings.py:37
 msgid "{status} Do not disturb"
 msgstr ""
 
-#: app/utils/chat_settings.py:39 app/utils/chat_settings.py:81
+#: app/utils/chat_settings.py:47 app/utils/chat_settings.py:89
 msgid "{flag} Language"
 msgstr ""
 
-#: app/utils/chat_settings.py:49 app/utils/chat_settings.py:91
+#: app/utils/chat_settings.py:57 app/utils/chat_settings.py:99
 msgid "Done"
 msgstr ""
 
-#: app/utils/chat_settings.py:64
+#: app/utils/chat_settings.py:72
 msgid "Settings for chat {chat_title}"
 msgstr ""
 
-#: app/utils/chat_settings.py:71
+#: app/utils/chat_settings.py:79
 msgid "{status} Join filter"
 msgstr ""

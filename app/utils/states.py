@@ -1,5 +1,5 @@
-from aiogram.dispatcher.filters.state import StatesGroup
+from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
 class States(StatesGroup):
-    pass
+    SET_TIMEZONE = State()

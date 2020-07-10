@@ -2,7 +2,10 @@ from contextlib import suppress
 
 from aiogram import types
 from aiogram.dispatcher.filters.filters import OrFilter
+from aiogram.dispatcher.filters.state import default_state
+from aiogram.types import ContentTypes, ForceReply
 from aiogram.utils.exceptions import MessageCantBeDeleted, MessageNotModified
+from aiogram.utils.markdown import hcode, hitalic
 from loguru import logger
 
 from app.middlewares.i18n import i18n
@@ -10,6 +13,8 @@ from app.misc import bot, dp
 from app.models.chat import Chat
 from app.models.user import User
 from app.utils.chat_settings import cb_user_settings, get_user_settings_markup
+from app.utils.sleep_tracker import parse_timezone
+from app.utils.states import States
 
 _ = i18n.gettext
 
@@ -24,6 +29,44 @@ async def cmd_chat_settings(message: types.Message, chat: Chat, user: User):
 
     text, markup = get_user_settings_markup(chat, user)
     await bot.send_message(chat_id=user.id, text=text, reply_markup=markup)
+
+
+@dp.callback_query_handler(cb_user_settings.filter(property="time_zone", value="set"))
+async def cq_user_settings_time_zone(
+    query: types.CallbackQuery, chat: Chat, user: User, callback_data: dict
+):
+    logger.info(
+        "User {user} wants set timezone", user=query.from_user.id,
+    )
+    text = [
+        _("Your current time zone: {timezone}\n".format(timezone=user.timezone)),
+        _("Enter your time zone ("),
+        hitalic(_("example: ")),
+        hcode("+1,+10:00,-3:30"),
+        "):",
+    ]
+
+    await query.answer()
+    await query.message.answer("".join(text), reply_markup=ForceReply())
+    await States.SET_TIMEZONE.set()
+
+
+@dp.message_handler(state=[States.SET_TIMEZONE], content_types=ContentTypes.TEXT)
+async def user_settings_set_time_zone(message: types.Message, chat: Chat, user: User):
+    logger.info(
+        "User {user} wants to set his timezone preference", user=message.from_user.id,
+    )
+    timezone: str = message.text
+    tz = parse_timezone(timezone)
+    if not tz:
+        await message.answer(_("Wrong format! See examples above"))
+    await user.update(timezone=tz.name).apply()
+    await message.answer(_("Time zone changed to {timezone}").format(timezone=tz.name))
+    with suppress(MessageCantBeDeleted):
+        await message.delete()
+    with suppress(AttributeError):
+        await message.reply_to_message.delete()
+    await default_state.set()
 
 
 @dp.callback_query_handler(cb_user_settings.filter(property="language", value="change"))
