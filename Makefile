@@ -112,7 +112,7 @@ migration:
 downgrade-db:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic downgrade -1
 
-_beforeStart: docker-db upgrade-db texts requirements
+_beforeStart: docker-db upgrade-db texts-compile requirements
 
 _app:
 	$(py) python -m core
