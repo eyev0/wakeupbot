@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-09 22:42+0300\n"
+"POT-Creation-Date: 2020-07-10 10:53+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -99,36 +99,36 @@ msgstr "выключен"
 msgid "Settings saved"
 msgstr "Настройки сохранены"
 
-#: app/handlers/sleep_tracker.py:24
+#: app/handlers/sleep_tracker.py:23
 msgid "Good night.."
 msgstr "Спокойной ночи.."
 
-#: app/handlers/sleep_tracker.py:42
+#: app/handlers/sleep_tracker.py:41
 msgid "Good morning!"
 msgstr "Доброе утро!"
 
-#: app/handlers/sleep_tracker.py:43
+#: app/handlers/sleep_tracker.py:42
 msgid "Your sleep:"
 msgstr "Сон:"
 
-#: app/handlers/sleep_tracker.py:49 app/handlers/sleep_tracker.py:115
-#: app/handlers/sleep_tracker.py:150 app/handlers/sleep_tracker.py:170
+#: app/handlers/sleep_tracker.py:48 app/handlers/sleep_tracker.py:124
+#: app/handlers/sleep_tracker.py:162 app/utils/sleep_tracker.py:25
 msgid "{hours}h {minutes}min"
 msgstr "{hours}ч {minutes}мин"
 
-#: app/handlers/sleep_tracker.py:74
+#: app/handlers/sleep_tracker.py:75
 msgid "Wrong option! - {option}"
 msgstr "Неправильная опция! - {option}"
 
-#: app/handlers/sleep_tracker.py:106
-msgid "Monthly stats for {month}: "
-msgstr "Статистика сна от месяца {month}: "
+#: app/handlers/sleep_tracker.py:115
+msgid "Monthly stats for {month_year}: "
+msgstr "Статистика сна {month_year}: "
 
-#: app/handlers/sleep_tracker.py:113 app/handlers/sleep_tracker.py:148
+#: app/handlers/sleep_tracker.py:122 app/handlers/sleep_tracker.py:160
 msgid "Average sleep hours per day:"
 msgstr "Часов сна в день в среднем:"
 
-#: app/handlers/sleep_tracker.py:144
+#: app/handlers/sleep_tracker.py:156
 msgid "Weekly stats: "
 msgstr "Статистика за неделю: "
 
