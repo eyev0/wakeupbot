@@ -39,7 +39,7 @@ async def cq_user_settings_time_zone(
         "User {user} wants set timezone", user=query.from_user.id,
     )
     text = [
-        _("Your current time zone: {timezone}\n".format(timezone=user.timezone)),
+        _("Your current time zone: {timezone}\n").format(timezone=user.timezone),
         _("Enter your time zone ("),
         hitalic(_("example: ")),
         hcode("+1,+10:00,-3:30"),
@@ -57,13 +57,13 @@ async def user_settings_set_time_zone(message: types.Message, chat: Chat, user: 
         "User {user} wants to set his timezone preference", user=message.from_user.id,
     )
     timezone: str = message.text
-    tz = parse_timezone(timezone)
-    if not tz:
+    try:
+        tz = parse_timezone(timezone)
+    except ValueError:
         await message.answer(_("Wrong format! See examples above"))
+        return
     await user.update(timezone=tz.name).apply()
     await message.answer(_("Time zone changed to {timezone}").format(timezone=tz.name))
-    with suppress(MessageCantBeDeleted):
-        await message.delete()
     await default_state.set()
 
 

@@ -70,8 +70,9 @@ def parse_timezone(timezone: str) -> Union[FixedTimezone, None]:
             raise ValueError
         offset = duration_from_timezone(timezone)
         return pendulum.tz.fixed_timezone(int(sign + "1") * offset.in_seconds())
-    except ValueError:
-        return None
+    except ValueError as e:
+        logger.info(f"Wrong timezone format: {timezone}")
+        raise e
 
 
 def duration_from_timezone(timezone: Union[FixedTimezone, str]) -> Duration:

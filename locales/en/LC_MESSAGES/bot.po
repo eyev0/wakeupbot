@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-10 13:19+0300\n"
+"POT-Creation-Date: 2020-07-11 06:45+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -78,68 +78,68 @@ msgstr ""
 msgid "example: "
 msgstr ""
 
-#: app/handlers/chat_settings.py:62
+#: app/handlers/chat_settings.py:63
 msgid "Wrong format! See examples above"
 msgstr ""
 
-#: app/handlers/chat_settings.py:64
+#: app/handlers/chat_settings.py:66
 msgid "Time zone changed to {timezone}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:88
+#: app/handlers/chat_settings.py:87
 msgid "Choose chat language"
 msgstr ""
 
-#: app/handlers/chat_settings.py:115
+#: app/handlers/chat_settings.py:114
 msgid "Language changed to {new_language}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:130
+#: app/handlers/chat_settings.py:129
 msgid "Do not disturb mode {mode}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:131
+#: app/handlers/chat_settings.py:130
 msgid "switched on"
 msgstr ""
 
-#: app/handlers/chat_settings.py:131
+#: app/handlers/chat_settings.py:130
 msgid "switched off"
 msgstr ""
 
-#: app/handlers/chat_settings.py:145
+#: app/handlers/chat_settings.py:144
 msgid "Settings saved"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:23
+#: app/handlers/sleep_tracker.py:28
 msgid "Good night.."
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:41
+#: app/handlers/sleep_tracker.py:46
 msgid "Good morning!"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:42
+#: app/handlers/sleep_tracker.py:47
 msgid "Your sleep:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:48 app/handlers/sleep_tracker.py:116
-#: app/handlers/sleep_tracker.py:155 app/utils/sleep_tracker.py:47
+#: app/handlers/sleep_tracker.py:53 app/handlers/sleep_tracker.py:121
+#: app/handlers/sleep_tracker.py:160 app/utils/sleep_tracker.py:47
 msgid "{hours}h {minutes}min"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:69
+#: app/handlers/sleep_tracker.py:74
 msgid "Wrong option! - {option}"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:107
+#: app/handlers/sleep_tracker.py:112
 msgid "Monthly stats for {month_year}: "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:114 app/handlers/sleep_tracker.py:153
+#: app/handlers/sleep_tracker.py:119 app/handlers/sleep_tracker.py:158
 msgid "Average sleep hours per day:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:149
+#: app/handlers/sleep_tracker.py:154
 msgid "Weekly stats: "
 msgstr ""
 
