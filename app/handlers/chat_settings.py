@@ -47,7 +47,7 @@ async def cq_user_settings_time_zone(
     ]
 
     await query.answer()
-    await query.message.answer("".join(text), reply_markup=ForceReply())
+    await query.message.answer("".join(text))
     await States.SET_TIMEZONE.set()
 
 
@@ -64,8 +64,6 @@ async def user_settings_set_time_zone(message: types.Message, chat: Chat, user: 
     await message.answer(_("Time zone changed to {timezone}").format(timezone=tz.name))
     with suppress(MessageCantBeDeleted):
         await message.delete()
-    with suppress(AttributeError):
-        await message.reply_to_message.delete()
     await default_state.set()
 
 
