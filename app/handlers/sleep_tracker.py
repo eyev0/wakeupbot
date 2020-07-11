@@ -2,7 +2,7 @@ import pendulum
 from aiogram import types
 from aiogram.utils.markdown import hbold, hitalic
 from loguru import logger
-from pendulum import DateTime, Duration, Period
+from pendulum import Duration, Period
 from sqlalchemy import and_
 
 from app.middlewares.i18n import i18n
@@ -11,14 +11,16 @@ from app.models.chat import Chat
 from app.models.sleep_record import SleepRecord
 from app.models.user import User
 from app.utils.sleep_tracker import (
-    explicit_stats,
-    get_month_from_diff,
+    as_datetime,
+    as_month,
+    as_short_date,
+    get_explicit_stats,
+    get_stats_by_day,
     parse_timezone,
-    stats_by_day,
+    subtract_diff,
 )
 
 _ = i18n.gettext
-datetime_fmtr = pendulum.Formatter()
 
 
 @dp.message_handler(text="-", user_awake=True)
@@ -45,9 +47,9 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
     text = [
         hbold(_("Good morning!")),
         _("Your sleep:"),
-        f"{datetime_fmtr.format(dt_created_at, 'D MMMM, dd HH:mm:ss', chat.language)}"
+        f"{as_datetime(dt_created_at, chat.language)}"
         + " - "
-        + f"{datetime_fmtr.format(dt_updated_at, 'D MMMM, dd HH:mm:ss', chat.language)}"
+        + f"{as_datetime(dt_updated_at, chat.language)}"
         + " -- "
         + hbold(
             _("{hours}h {minutes}min").format(
@@ -69,24 +71,31 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     tz = parse_timezone(user.timezone)
     now = pendulum.now(tz)
     try:
-        year_month = get_month_from_diff(message.text, now)
+        dt = subtract_diff(diff=message.text, now_dt=now, period="month")
     except ValueError:
         await message.answer(_("Wrong option! - {option}").format(message.text))
         return
-    year = year_month.year
-    month = year_month.month
-    month_dt = DateTime(year=year, month=month, day=1, tzinfo=tz)
-    start = now.replace(
-        year=year, month=month, day=1, hour=0, minute=0, second=0, microsecond=0
+    start = pendulum.instance(
+        now.replace(
+            year=dt.year,
+            month=dt.month,
+            day=1,
+            hour=0,
+            minute=0,
+            second=0,
+            microsecond=0,
+        )
     )
-    end = now.replace(
-        year=year,
-        month=month,
-        day=month_dt.days_in_month,
-        hour=23,
-        minute=59,
-        second=59,
-        microsecond=0,
+    end = pendulum.instance(
+        now.replace(
+            year=dt.year,
+            month=dt.month,
+            day=dt.days_in_month,
+            hour=23,
+            minute=59,
+            second=59,
+            microsecond=0,
+        )
     )
 
     sleep_records = (
@@ -101,20 +110,21 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
         .gino.all()
     )
 
-    explicit = [x for x in explicit_stats(sleep_records, tz, chat.language)]
-    by_day = [x for x in stats_by_day(sleep_records, tz, chat.language)]
+    explicit_stats = [x for x in get_explicit_stats(sleep_records, tz, chat.language)]
+    grouped_by_day = [x for x in get_stats_by_day(sleep_records, tz, chat.language)]
     avg_sleep_per_day = Duration(
-        seconds=sum(map(lambda x: x.in_seconds(), by_day)) / max(len(by_day), 1)
+        seconds=sum(map(lambda x: x.in_seconds(), grouped_by_day))
+        / max(len(grouped_by_day), 1)
     )
 
     text = [
         hbold(
             _("Monthly stats for {month_year}: ").format(
-                month_year=datetime_fmtr.format(month_dt, "MMMM YYYY", chat.language)
+                month_year=as_month(dt, chat.language)
             )
         ),
         "",
-        *explicit,
+        *explicit_stats,
         "",
         hbold(_("Average sleep hours per day:")),
         hbold(
@@ -126,34 +136,56 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     await message.answer("\n".join(text))
 
 
-@dp.message_handler(text="!")
+@dp.message_handler(text_startswith="!")
 async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
     logger.info(
         "User {user} requested weekly sleep statistics", user=message.from_user.id
     )
     tz = parse_timezone(user.timezone)
     now = pendulum.now(tz)
-    monday_0am = now.replace(
-        day=now.day - now.weekday(), hour=0, minute=0, second=0, microsecond=0
+    try:
+        dt = subtract_diff(diff=message.text, now_dt=now, period="week")
+    except ValueError:
+        await message.answer(_("Wrong option! - {option}").format(message.text))
+        return
+    start = pendulum.instance(
+        dt.subtract(days=dt.weekday()).replace(
+            hour=0, minute=0, second=0, microsecond=0,
+        )
+    )
+    end = pendulum.instance(
+        dt.add(days=7 - dt.weekday()).replace(
+            hour=23, minute=59, second=59, microsecond=0,
+        )
     )
     sleep_records = (
         await SleepRecord.query.where(
-            and_(SleepRecord.user_id == user.id, SleepRecord.created_at > monday_0am)
+            and_(
+                SleepRecord.user_id == user.id,
+                SleepRecord.created_at >= start,
+                SleepRecord.created_at <= end,
+            )
         )
         .order_by(SleepRecord.created_at)
         .gino.all()
     )
 
-    explicit = [x for x in explicit_stats(sleep_records, tz, chat.language)]
-    by_day = [x for x in stats_by_day(sleep_records, tz, chat.language)]
+    explicit_stats = [x for x in get_explicit_stats(sleep_records, tz, chat.language)]
+    grouped_by_day = [x for x in get_stats_by_day(sleep_records, tz, chat.language)]
     avg_sleep_per_day = Duration(
-        seconds=sum(map(lambda x: x.in_seconds(), by_day)) / max(len(by_day), 1)
+        seconds=sum(map(lambda x: x.in_seconds(), grouped_by_day))
+        / max(len(grouped_by_day), 1)
     )
 
     text = [
-        hbold(_("Weekly stats: ")),
+        hbold(
+            _("Weekly stats ({start} - {end}): ").format(
+                start=as_short_date(start, chat.language),
+                end=as_short_date(end, chat.language),
+            )
+        ),
         "",
-        *explicit,
+        *explicit_stats,
         "",
         hbold(_("Average sleep hours per day:")),
         hbold(

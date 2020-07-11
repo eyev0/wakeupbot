@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-11 06:45+0300\n"
+"POT-Creation-Date: 2020-07-11 07:42+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -25,7 +25,8 @@ msgid ""
 "\n"
 "Send me '-' when you go to sleep, and '+' when you wake up :) \n"
 "Send '!' to view your weekly stats, '!m' - monthly stats\n"
-"('!m -1' to view stats on previous month etc.)\n"
+"('! -1' - stats on previous weeks,\n"
+"'!m -1' - stats on previous months etc.)\n"
 "\n"
 "Send /help to see list of my commands.\n"
 "You can change language in /settings menu :)"
@@ -34,44 +35,49 @@ msgstr ""
 "\n"
 "Отправляй мне '-' когда засыпаешь, а '+' когда просыпаешься с утра! :)\n"
 "'!' - статистика за неделю, '!м' - за месяц\n"
-"('!м -1', '!м -2' - за предыдущие месяцы)\n"
+"('! -1' - предыдущая неделя,\n"
+"'!m -1' - предыдущий месяц итд.)\n"
 "\n"
 "Пиши /help, чтобы увидеть список команд, если что забыл(а) :)\n"
 "Можешь поменять язык в меню /settings"
 
-#: app/handlers/base.py:34
+#: app/handlers/base.py:35
 msgid "Here's list of my commands:"
 msgstr "Список моих комманд:"
 
-#: app/handlers/base.py:35
+#: app/handlers/base.py:36
 msgid "\"-\" - Start sleeping"
 msgstr "\"-\" - Начать сон"
 
-#: app/handlers/base.py:36
+#: app/handlers/base.py:37
 msgid "\"+\" - Record your sleep"
 msgstr "\"+\" - Закончить сон"
 
-#: app/handlers/base.py:37
+#: app/handlers/base.py:38
 msgid "\"!\" - View weekly stats"
 msgstr "\"!\" - Статистика за неделю"
 
-#: app/handlers/base.py:38
+#: app/handlers/base.py:39
 msgid "\"!m\" - View monthly stats"
 msgstr "\"!m\" - Статистика за месяц"
 
-#: app/handlers/base.py:39
+#: app/handlers/base.py:40
+msgid "\"! -1\" - View previous week's stats"
+msgstr "\"! -1\" - Статистика предыдущей недели"
+
+#: app/handlers/base.py:41
 msgid "\"!m -1\" - View previous month's stats"
 msgstr "\"!m -1\" - Статистика предыдущего месяца"
 
-#: app/handlers/base.py:40
+#: app/handlers/base.py:42
 msgid "{command} - Start conversation with bot"
 msgstr "{command} - Приветствие от меня!"
 
-#: app/handlers/base.py:41
+#: app/handlers/base.py:43
 msgid "{command} - Show this message"
 msgstr "{command} - Показать это сообщение"
 
-#: app/handlers/base.py:42
+#: app/handlers/base.py:44
 msgid "{command} - User settings"
 msgstr "{command} - Настройки"
 
@@ -119,38 +125,38 @@ msgstr "выключен"
 msgid "Settings saved"
 msgstr "Настройки сохранены"
 
-#: app/handlers/sleep_tracker.py:28
+#: app/handlers/sleep_tracker.py:30
 msgid "Good night.."
 msgstr "Спокойной ночи.."
 
-#: app/handlers/sleep_tracker.py:46
+#: app/handlers/sleep_tracker.py:48
 msgid "Good morning!"
 msgstr "Доброе утро!"
 
-#: app/handlers/sleep_tracker.py:47
+#: app/handlers/sleep_tracker.py:49
 msgid "Your sleep:"
 msgstr "Сон:"
 
-#: app/handlers/sleep_tracker.py:53 app/handlers/sleep_tracker.py:121
-#: app/handlers/sleep_tracker.py:160 app/utils/sleep_tracker.py:47
+#: app/handlers/sleep_tracker.py:55 app/handlers/sleep_tracker.py:131
+#: app/handlers/sleep_tracker.py:192 app/utils/sleep_tracker.py:44
 msgid "{hours}h {minutes}min"
 msgstr "{hours}ч {minutes}мин"
 
-#: app/handlers/sleep_tracker.py:74
+#: app/handlers/sleep_tracker.py:76 app/handlers/sleep_tracker.py:149
 msgid "Wrong option! - {option}"
 msgstr "Неправильная опция! - {option}"
 
-#: app/handlers/sleep_tracker.py:112
+#: app/handlers/sleep_tracker.py:122
 msgid "Monthly stats for {month_year}: "
 msgstr "Статистика сна {month_year}: "
 
-#: app/handlers/sleep_tracker.py:119 app/handlers/sleep_tracker.py:158
+#: app/handlers/sleep_tracker.py:129 app/handlers/sleep_tracker.py:190
 msgid "Average sleep hours per day:"
 msgstr "Часов сна в день в среднем:"
 
-#: app/handlers/sleep_tracker.py:154
-msgid "Weekly stats: "
-msgstr "Статистика за неделю: "
+#: app/handlers/sleep_tracker.py:182
+msgid "Weekly stats ({start} - {end}): "
+msgstr "Статистика за неделю ({start} - {end}): "
 
 #: app/handlers/superuser.py:26
 msgid "Successfuly changed is_superuser to {is_superuser} for user {user}"

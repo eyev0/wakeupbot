@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-11 06:45+0300\n"
+"POT-Creation-Date: 2020-07-11 07:42+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,45 +24,50 @@ msgid ""
 "\n"
 "Send me '-' when you go to sleep, and '+' when you wake up :) \n"
 "Send '!' to view your weekly stats, '!m' - monthly stats\n"
-"('!m -1' to view stats on previous month etc.)\n"
+"('! -1' - stats on previous weeks,\n"
+"'!m -1' - stats on previous months etc.)\n"
 "\n"
 "Send /help to see list of my commands.\n"
 "You can change language in /settings menu :)"
 msgstr ""
 
-#: app/handlers/base.py:34
+#: app/handlers/base.py:35
 msgid "Here's list of my commands:"
 msgstr ""
 
-#: app/handlers/base.py:35
+#: app/handlers/base.py:36
 msgid "\"-\" - Start sleeping"
 msgstr ""
 
-#: app/handlers/base.py:36
+#: app/handlers/base.py:37
 msgid "\"+\" - Record your sleep"
 msgstr ""
 
-#: app/handlers/base.py:37
+#: app/handlers/base.py:38
 msgid "\"!\" - View weekly stats"
 msgstr ""
 
-#: app/handlers/base.py:38
+#: app/handlers/base.py:39
 msgid "\"!m\" - View monthly stats"
 msgstr ""
 
-#: app/handlers/base.py:39
-msgid "\"!m -1\" - View previous month's stats"
-msgstr ""
-
 #: app/handlers/base.py:40
-msgid "{command} - Start conversation with bot"
+msgid "\"! -1\" - View previous week's stats"
 msgstr ""
 
 #: app/handlers/base.py:41
-msgid "{command} - Show this message"
+msgid "\"!m -1\" - View previous month's stats"
 msgstr ""
 
 #: app/handlers/base.py:42
+msgid "{command} - Start conversation with bot"
+msgstr ""
+
+#: app/handlers/base.py:43
+msgid "{command} - Show this message"
+msgstr ""
+
+#: app/handlers/base.py:44
 msgid "{command} - User settings"
 msgstr ""
 
@@ -110,37 +115,37 @@ msgstr ""
 msgid "Settings saved"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:28
+#: app/handlers/sleep_tracker.py:30
 msgid "Good night.."
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:46
+#: app/handlers/sleep_tracker.py:48
 msgid "Good morning!"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:47
+#: app/handlers/sleep_tracker.py:49
 msgid "Your sleep:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:53 app/handlers/sleep_tracker.py:121
-#: app/handlers/sleep_tracker.py:160 app/utils/sleep_tracker.py:47
+#: app/handlers/sleep_tracker.py:55 app/handlers/sleep_tracker.py:131
+#: app/handlers/sleep_tracker.py:192 app/utils/sleep_tracker.py:44
 msgid "{hours}h {minutes}min"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:74
+#: app/handlers/sleep_tracker.py:76 app/handlers/sleep_tracker.py:149
 msgid "Wrong option! - {option}"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:112
+#: app/handlers/sleep_tracker.py:122
 msgid "Monthly stats for {month_year}: "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:119 app/handlers/sleep_tracker.py:158
+#: app/handlers/sleep_tracker.py:129 app/handlers/sleep_tracker.py:190
 msgid "Average sleep hours per day:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:154
-msgid "Weekly stats: "
+#: app/handlers/sleep_tracker.py:182
+msgid "Weekly stats ({start} - {end}): "
 msgstr ""
 
 #: app/handlers/superuser.py:26
@@ -178,3 +183,17 @@ msgstr ""
 #: app/utils/chat_settings.py:79
 msgid "{status} Join filter"
 msgstr ""
+
+#~ msgid "Weekly stats: "
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Hello, {user}!\n"
+#~ "\n"
+#~ "Send me '-' when you go to sleep, and '+' when you wake up :) \n"
+#~ "Send '!' to view your weekly stats, '!m' - monthly stats\n"
+#~ "('!m -1' to view stats on previous month etc.)\n"
+#~ "\n"
+#~ "Send /help to see list of my commands.\n"
+#~ "You can change language in /settings menu :)"
+#~ msgstr ""

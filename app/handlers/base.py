@@ -18,7 +18,8 @@ async def cmd_start(message: types.Message, user: User):
             "Hello, {user}!\n\n"
             "Send me '-' when you go to sleep, and '+' when you wake up :) \n"
             "Send '!' to view your weekly stats, '!m' - monthly stats\n"
-            "('!m -1' to view stats on previous month etc.)\n\n"
+            "('! -1' - stats on previous weeks,\n"
+            "'!m -1' - stats on previous months etc.)\n\n"
             "Send /help to see list of my commands.\n"
             "You can change language in /settings menu :)"
         ).format(user=hbold(message.from_user.full_name),)
@@ -36,6 +37,7 @@ async def cmd_help(message: types.Message, user: User):
         _('"+" - Record your sleep'),
         _('"!" - View weekly stats'),
         _('"!m" - View monthly stats'),
+        _('"! -1" - View previous week\'s stats'),
         _('"!m -1" - View previous month\'s stats'),
         _("{command} - Start conversation with bot").format(command="/start"),
         _("{command} - Show this message").format(command="/help"),

@@ -1,4 +1,4 @@
-from typing import List, NamedTuple, Union
+from typing import List, Union
 
 import pendulum
 from aiogram.utils.markdown import hbold
@@ -13,35 +13,32 @@ _ = i18n.gettext
 datetime_fmtr = pendulum.Formatter()
 
 
-def get_month_from_diff(diff: str, now_dt: DateTime):
-    result = NamedTuple("StatRange", month=int, year=int)
+def subtract_diff(diff: str, now_dt: DateTime, period: str) -> DateTime:
+    new_dt = now_dt
     command, *args = diff.split(maxsplit=1)
     args = args[-1] if args else ""
     if args:
         try:
-            month_diff = int(args)
+            diff = -int(args)
         except ValueError as e:
             logger.error(e)
             raise e
-        month = (now_dt.month + month_diff - 12) % 12
-        if month == 0:
-            month = 12
-        year = now_dt.year + int((now_dt.month + month_diff - 12) / 12)
-    else:
-        month = now_dt.month
-        year = now_dt.year
-    return result(month, year)
+        if period == "month":
+            new_dt = now_dt.subtract(months=diff)
+        elif period == "week":
+            new_dt = now_dt.subtract(weeks=diff)
+    return new_dt
 
 
-def explicit_stats(records: List[SleepRecord], tz, language):
+def get_explicit_stats(records: List[SleepRecord], tz, language):
     for record in records:
         dt_created_at = pendulum.instance(record.created_at).in_timezone(tz)
         dt_updated_at = pendulum.instance(record.updated_at).in_timezone(tz)
         interval = Period(dt_created_at, dt_updated_at).as_interval()
         yield (
-            f"{datetime_fmtr.format(dt_created_at, 'D MMMM, dd HH:mm:ss', language)}"
+            f"{as_datetime(dt_created_at, language)}"
             + " - "
-            + f"{datetime_fmtr.format(dt_updated_at, 'D MMMM, dd HH:mm:ss', language)}"
+            + f"{as_datetime(dt_updated_at, language)}"
             + " -- "
             + hbold(
                 _("{hours}h {minutes}min").format(
@@ -51,7 +48,7 @@ def explicit_stats(records: List[SleepRecord], tz, language):
         )
 
 
-def stats_by_day(records: List[SleepRecord], tz, language):
+def get_stats_by_day(records: List[SleepRecord], tz, language):
     result = [Duration() for i in range(7)]
     for record in records:
         dt_created_at = pendulum.instance(record.created_at).in_timezone(tz)
@@ -82,3 +79,15 @@ def duration_from_timezone(timezone: Union[FixedTimezone, str]) -> Duration:
     minutes = minutes[-1] if minutes else "0"
     duration = pendulum.Duration(hours=int(hours), minutes=int(minutes))
     return duration
+
+
+def as_short_date(dt: DateTime, locale):
+    return datetime_fmtr.format(dt, "D MMM", locale)
+
+
+def as_month(dt: DateTime, locale):
+    return datetime_fmtr.format(dt, "MMMM YYYY", locale)
+
+
+def as_datetime(dt: DateTime, locale):
+    return datetime_fmtr.format(dt, "D MMMM, dd HH:mm:ss", locale)
