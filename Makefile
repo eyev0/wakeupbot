@@ -161,6 +161,8 @@ docker-logs:
 
 app-create: _beforeStart docker-db-stop docker-build docker-stop docker-up
 
+app-recreate: app-down app-create
+
 app-logs:
 	$(MAKE) docker-logs args="bot"
 
