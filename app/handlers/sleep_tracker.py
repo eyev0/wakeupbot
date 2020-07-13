@@ -40,6 +40,7 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
     await record.update(check_wakeup=True).apply()
     record: SleepRecord = await SleepRecord.get(record_id)
 
+    tz = parse_timezone(user.timezone)
     interval = Period(record.created_at, record.updated_at).as_interval()
     dt_created_at = pendulum.instance(record.created_at)
     dt_updated_at = pendulum.instance(record.updated_at)
@@ -47,9 +48,9 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
     text = [
         hbold(_("Good morning!")),
         _("Your sleep:"),
-        f"{as_datetime(dt_created_at, chat.language)}"
+        f"{as_datetime(dt_created_at, tz, chat.language)}"
         + " - "
-        + f"{as_datetime(dt_updated_at, chat.language)}"
+        + f"{as_datetime(dt_updated_at, tz, chat.language)}"
         + " -- "
         + hbold(
             _("{hours}h {minutes}min").format(
@@ -120,7 +121,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     text = [
         hbold(
             _("Monthly stats for {month_year}: ").format(
-                month_year=as_month(dt, chat.language)
+                month_year=as_month(dt, tz, chat.language)
             )
         ),
         "",
@@ -180,8 +181,8 @@ async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
     text = [
         hbold(
             _("Weekly stats ({start} - {end}): ").format(
-                start=as_short_date(start, chat.language),
-                end=as_short_date(end, chat.language),
+                start=as_short_date(start, tz, chat.language),
+                end=as_short_date(end, tz, chat.language),
             )
         ),
         "",

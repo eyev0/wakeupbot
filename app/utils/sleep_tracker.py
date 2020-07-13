@@ -32,13 +32,13 @@ def subtract_diff(diff: str, now_dt: DateTime, period: str) -> DateTime:
 
 def get_explicit_stats(records: List[SleepRecord], tz, language):
     for record in records:
-        dt_created_at = pendulum.instance(record.created_at).in_timezone(tz)
-        dt_updated_at = pendulum.instance(record.updated_at).in_timezone(tz)
+        dt_created_at = pendulum.instance(record.created_at)
+        dt_updated_at = pendulum.instance(record.updated_at)
         interval = Period(dt_created_at, dt_updated_at).as_interval()
         yield (
-            f"{as_datetime(dt_created_at, language)}"
+            f"{as_datetime(dt_created_at, tz, language)}"
             + " - "
-            + f"{as_datetime(dt_updated_at, language)}"
+            + f"{as_datetime(dt_updated_at, tz, language)}"
             + " -- "
             + hbold(
                 _("{hours}h {minutes}min").format(
@@ -51,11 +51,11 @@ def get_explicit_stats(records: List[SleepRecord], tz, language):
 def get_stats_by_day(records: List[SleepRecord], tz, language):
     result = [Duration() for i in range(7)]
     for record in records:
-        dt_created_at = pendulum.instance(record.created_at).in_timezone(tz)
-        dt_updated_at = pendulum.instance(record.updated_at).in_timezone(tz)
+        dt_created_at = pendulum.instance(record.created_at)
+        dt_updated_at = pendulum.instance(record.updated_at)
         interval = Period(dt_created_at, dt_updated_at).as_interval()
-        day_of_week = int(datetime_fmtr.format(dt_created_at, "d"))
-        result[day_of_week] = result[day_of_week] + interval
+        weekday = int(as_weekday(dt_created_at, tz))
+        result[weekday] = result[weekday] + interval
     for x in filter(lambda a: a.in_seconds() > 0, result):
         yield x
 
@@ -81,13 +81,17 @@ def duration_from_timezone(timezone: Union[FixedTimezone, str]) -> Duration:
     return duration
 
 
-def as_short_date(dt: DateTime, locale):
-    return datetime_fmtr.format(dt, "D MMM", locale)
+def as_short_date(dt: DateTime, tz, locale):
+    return datetime_fmtr.format(dt.in_tz(tz), "D MMM", locale)
 
 
-def as_month(dt: DateTime, locale):
-    return datetime_fmtr.format(dt, "MMMM YYYY", locale)
+def as_month(dt: DateTime, tz, locale):
+    return datetime_fmtr.format(dt.in_tz(tz), "MMMM YYYY", locale)
 
 
-def as_datetime(dt: DateTime, locale):
-    return datetime_fmtr.format(dt, "D MMMM, dd HH:mm:ss", locale)
+def as_datetime(dt: DateTime, tz, locale):
+    return datetime_fmtr.format(dt.in_tz(tz), "D MMMM, dd HH:mm:ss", locale)
+
+
+def as_weekday(dt: DateTime, tz):
+    return datetime_fmtr.format(dt.in_tz(tz), "d")
