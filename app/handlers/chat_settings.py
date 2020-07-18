@@ -2,8 +2,8 @@ from contextlib import suppress
 
 from aiogram import types
 from aiogram.dispatcher.filters.filters import OrFilter
-from aiogram.dispatcher.filters.state import default_state
-from aiogram.types import ContentTypes, ForceReply
+from aiogram.dispatcher.filters.state import any_state, default_state
+from aiogram.types import ContentTypes
 from aiogram.utils.exceptions import MessageCantBeDeleted, MessageNotModified
 from aiogram.utils.markdown import hcode, hitalic
 from loguru import logger
@@ -46,9 +46,41 @@ async def cq_user_settings_time_zone(
         "):",
     ]
 
+    markup = types.InlineKeyboardMarkup()
+    callback_factory = cb_user_settings.new
+    markup.add(
+        types.InlineKeyboardButton(
+            _("Cancel"),
+            callback_data=callback_factory(property="time_zone", value="cancel"),
+        )
+    )
+
     await query.answer()
-    await query.message.answer("".join(text))
+    await query.message.answer("".join(text), reply_markup=markup)
     await States.SET_TIMEZONE.set()
+
+
+@dp.callback_query_handler(
+    cb_user_settings.filter(property="time_zone", value="cancel"), state=any_state
+)
+async def cq_user_settings_cancel_time_zone(
+    query: types.CallbackQuery, chat: Chat, user: User, callback_data: dict, state
+):
+    logger.info(
+        "User {user} cancelled time zone change", user=query.from_user.id,
+    )
+    cb_answer = ""
+    if await state.get_state() == States.SET_TIMEZONE.state:
+        cb_answer = _("Action cancelled")
+    await query.answer(cb_answer)
+    with suppress(MessageCantBeDeleted):
+        await query.message.delete()
+    await default_state.set()
+
+
+@dp.callback_query_handler(state=[States.SET_TIMEZONE])
+async def cq_user_settings_warning(query: types.CallbackQuery,):
+    await query.answer(_("Choose your timezone or press cancel"))
 
 
 @dp.message_handler(state=[States.SET_TIMEZONE], content_types=ContentTypes.TEXT)
@@ -141,5 +173,5 @@ async def cq_chat_settings_done(query: types.CallbackQuery, chat: Chat):
     logger.info(
         "User {user} close settings menu", user=query.from_user.id,
     )
-    await query.answer(_("Settings saved"), show_alert=True)
+    await query.answer(_("Settings saved"))
     await query.message.delete()
