@@ -13,8 +13,8 @@ _ = i18n.gettext
 datetime_fmtr = pendulum.Formatter()
 
 
-def subtract_diff(diff: str, now_dt: DateTime, period: str) -> DateTime:
-    new_dt = now_dt
+def subtract_from(date: DateTime, diff: str, period: str) -> DateTime:
+    new_dt = date
     command, *args = diff.split(maxsplit=1)
     args = args[-1] if args else ""
     if args:
@@ -24,9 +24,9 @@ def subtract_diff(diff: str, now_dt: DateTime, period: str) -> DateTime:
             logger.error(e)
             raise e
         if period == "month":
-            new_dt = now_dt.subtract(months=diff)
+            new_dt = date.subtract(months=diff)
         elif period == "week":
-            new_dt = now_dt.subtract(weeks=diff)
+            new_dt = date.subtract(weeks=diff)
     return new_dt
 
 
@@ -48,14 +48,24 @@ def get_explicit_stats(records: List[SleepRecord], tz, language):
         )
 
 
-def get_stats_by_day(records: List[SleepRecord], tz, language):
-    result = [Duration() for i in range(7)]
+def get_stats_by_day(records: List[SleepRecord], tz, language, mode="week", days=7):
+    if mode == "week":
+        get_day_func = as_weekday
+    elif mode == "month":
+        days = days + 1
+        get_day_func = as_day
+    else:
+        return []
+    result = [Duration() for i in range(days)]
+
+    latenight_offset = Duration(hours=5)
+    offset_tz = FixedTimezone(offset=tz.offset - latenight_offset.in_seconds())
     for record in records:
         dt_created_at = pendulum.instance(record.created_at)
         dt_updated_at = pendulum.instance(record.updated_at)
         interval = Period(dt_created_at, dt_updated_at).as_interval()
-        weekday = int(as_weekday(dt_created_at, tz))
-        result[weekday] = result[weekday] + interval
+        i = int(get_day_func(dt_created_at, offset_tz))
+        result[i] = result[i] + interval
     for x in filter(lambda a: a.in_seconds() > 0, result):
         yield x
 
@@ -95,3 +105,7 @@ def as_datetime(dt: DateTime, tz, locale):
 
 def as_weekday(dt: DateTime, tz):
     return datetime_fmtr.format(dt.in_tz(tz), "d")
+
+
+def as_day(dt: DateTime, tz):
+    return datetime_fmtr.format(dt.in_tz(tz), "D")

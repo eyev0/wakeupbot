@@ -17,7 +17,7 @@ from app.utils.sleep_tracker import (
     get_explicit_stats,
     get_stats_by_day,
     parse_timezone,
-    subtract_diff,
+    subtract_from,
 )
 
 _ = i18n.gettext
@@ -72,9 +72,9 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     tz = parse_timezone(user.timezone)
     now = pendulum.now(tz)
     try:
-        dt = subtract_diff(diff=message.text, now_dt=now, period="month")
+        dt = subtract_from(date=now, diff=message.text, period="month")
     except ValueError:
-        await message.answer(_("Wrong option! - {option}").format(message.text))
+        await message.answer(_("Wrong option! - {option}").format(option=message.text))
         return
     start = pendulum.instance(
         now.replace(
@@ -87,17 +87,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
             microsecond=0,
         )
     )
-    end = pendulum.instance(
-        now.replace(
-            year=dt.year,
-            month=dt.month,
-            day=dt.days_in_month,
-            hour=23,
-            minute=59,
-            second=59,
-            microsecond=0,
-        )
-    )
+    end = start.add(months=1)
 
     sleep_records = (
         await SleepRecord.query.where(
@@ -112,7 +102,12 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     )
 
     explicit_stats = [x for x in get_explicit_stats(sleep_records, tz, chat.language)]
-    grouped_by_day = [x for x in get_stats_by_day(sleep_records, tz, chat.language)]
+    grouped_by_day = [
+        x
+        for x in get_stats_by_day(
+            sleep_records, tz, chat.language, mode="month", days=start.days_in_month
+        )
+    ]
     avg_sleep_per_day = Duration(
         seconds=sum(map(lambda x: x.in_seconds(), grouped_by_day))
         / max(len(grouped_by_day), 1)
@@ -145,20 +140,17 @@ async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
     tz = parse_timezone(user.timezone)
     now = pendulum.now(tz)
     try:
-        dt = subtract_diff(diff=message.text, now_dt=now, period="week")
+        dt = subtract_from(date=now, diff=message.text, period="week")
     except ValueError:
-        await message.answer(_("Wrong option! - {option}").format(message.text))
+        await message.answer(_("Wrong option! - {option}").format(option=message.text))
         return
     start = pendulum.instance(
         dt.subtract(days=dt.weekday()).replace(
             hour=0, minute=0, second=0, microsecond=0,
         )
     )
-    end = pendulum.instance(
-        dt.add(days=7 - dt.weekday()).replace(
-            hour=23, minute=59, second=59, microsecond=0,
-        )
-    )
+    end = start.add(weeks=1)
+
     sleep_records = (
         await SleepRecord.query.where(
             and_(
