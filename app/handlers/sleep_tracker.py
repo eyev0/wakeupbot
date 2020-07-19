@@ -1,6 +1,5 @@
 import pendulum
 from aiogram import types
-from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.markdown import hbold, hitalic
 from loguru import logger
 from pendulum import Duration, Period
@@ -83,7 +82,7 @@ async def cq_user_wakeup_mood(
     text = [_("Mood this morning"), mood_text]
     await query.answer()
     await query.message.edit_text(
-        text="\n".join(text), reply_markup=InlineKeyboardMarkup()
+        text="\n".join(text), reply_markup=get_moods_markup(sleep_record.id)
     )
 
 
