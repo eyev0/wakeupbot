@@ -178,7 +178,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     text.extend(
         [
             "",
-            hbold(_("Montly average sleep:")),
+            hbold(_("Monthly average sleep:")),
             hbold(
                 _("{hours}h {minutes}min").format(
                     hours=avg_sleep_per_day.hours, minutes=avg_sleep_per_day.minutes,

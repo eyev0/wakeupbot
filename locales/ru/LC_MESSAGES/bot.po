@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-19 11:43+0300\n"
+"POT-Creation-Date: 2020-07-19 15:39+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -149,8 +149,9 @@ msgstr "Доброе утро!"
 msgid "Your sleep:"
 msgstr "Сон:"
 
-#: app/handlers/sleep_tracker.py:59 app/handlers/sleep_tracker.py:153
-#: app/handlers/sleep_tracker.py:211 app/utils/sleep_tracker.py:73
+#: app/handlers/sleep_tracker.py:59 app/handlers/sleep_tracker.py:162
+#: app/handlers/sleep_tracker.py:183 app/handlers/sleep_tracker.py:238
+#: app/utils/sleep_tracker.py:74
 msgid "{hours}h {minutes}min"
 msgstr "{hours}ч {minutes}мин"
 
@@ -162,21 +163,33 @@ msgstr "Как ты себя чувствуешь после сна?"
 msgid "Mood this morning"
 msgstr "Самочувствие этим утром"
 
-#: app/handlers/sleep_tracker.py:103 app/handlers/sleep_tracker.py:171
+#: app/handlers/sleep_tracker.py:103 app/handlers/sleep_tracker.py:202
 msgid "Wrong option! - {option}"
 msgstr "Неправильная опция! - {option}"
 
-#: app/handlers/sleep_tracker.py:144
+#: app/handlers/sleep_tracker.py:120
 msgid "Monthly stats for {month_year}: "
-msgstr "Статистика сна {month_year}: "
+msgstr "Статистика {month_year}: "
 
-#: app/handlers/sleep_tracker.py:151 app/handlers/sleep_tracker.py:209
-msgid "Average sleep hours per day:"
-msgstr "Часов сна в день в среднем:"
+#: app/handlers/sleep_tracker.py:154
+msgid "{start} - {end}: "
+msgstr ""
 
-#: app/handlers/sleep_tracker.py:201
+#: app/handlers/sleep_tracker.py:160
+msgid "Average sleep:"
+msgstr "Сна в среднем"
+
+#: app/handlers/sleep_tracker.py:181
+msgid "Monthly average sleep:"
+msgstr "Сна в среднем за месяц"
+
+#: app/handlers/sleep_tracker.py:228
 msgid "Weekly stats ({start} - {end}): "
 msgstr "Статистика за неделю ({start} - {end}): "
+
+#: app/handlers/sleep_tracker.py:236
+msgid "Average sleep hours per day:"
+msgstr "Часов сна в день в среднем:"
 
 #: app/handlers/superuser.py:26
 msgid "Successfuly changed is_superuser to {is_superuser} for user {user}"
