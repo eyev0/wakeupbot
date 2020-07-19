@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-18 17:49+0300\n"
+"POT-Creation-Date: 2020-07-19 11:43+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -137,36 +137,44 @@ msgstr "выключен"
 msgid "Settings saved"
 msgstr "Настройки сохранены"
 
-#: app/handlers/sleep_tracker.py:30
+#: app/handlers/sleep_tracker.py:33
 msgid "Good night.."
 msgstr "Спокойной ночи.."
 
-#: app/handlers/sleep_tracker.py:49
+#: app/handlers/sleep_tracker.py:52
 msgid "Good morning!"
 msgstr "Доброе утро!"
 
-#: app/handlers/sleep_tracker.py:50
+#: app/handlers/sleep_tracker.py:53
 msgid "Your sleep:"
 msgstr "Сон:"
 
-#: app/handlers/sleep_tracker.py:56 app/handlers/sleep_tracker.py:127
-#: app/handlers/sleep_tracker.py:185 app/utils/sleep_tracker.py:44
+#: app/handlers/sleep_tracker.py:59 app/handlers/sleep_tracker.py:153
+#: app/handlers/sleep_tracker.py:211 app/utils/sleep_tracker.py:73
 msgid "{hours}h {minutes}min"
 msgstr "{hours}ч {minutes}мин"
 
-#: app/handlers/sleep_tracker.py:77 app/handlers/sleep_tracker.py:145
+#: app/handlers/sleep_tracker.py:66
+msgid "How do you feel?"
+msgstr "Как ты себя чувствуешь после сна?"
+
+#: app/handlers/sleep_tracker.py:83
+msgid "Mood this morning"
+msgstr "Самочувствие этим утром"
+
+#: app/handlers/sleep_tracker.py:103 app/handlers/sleep_tracker.py:171
 msgid "Wrong option! - {option}"
 msgstr "Неправильная опция! - {option}"
 
-#: app/handlers/sleep_tracker.py:118
+#: app/handlers/sleep_tracker.py:144
 msgid "Monthly stats for {month_year}: "
 msgstr "Статистика сна {month_year}: "
 
-#: app/handlers/sleep_tracker.py:125 app/handlers/sleep_tracker.py:183
+#: app/handlers/sleep_tracker.py:151 app/handlers/sleep_tracker.py:209
 msgid "Average sleep hours per day:"
 msgstr "Часов сна в день в среднем:"
 
-#: app/handlers/sleep_tracker.py:175
+#: app/handlers/sleep_tracker.py:201
 msgid "Weekly stats ({start} - {end}): "
 msgstr "Статистика за неделю ({start} - {end}): "
 
@@ -205,3 +213,19 @@ msgstr "Настройки чата для {chat_title}"
 #: app/utils/chat_settings.py:79
 msgid "{status} Join filter"
 msgstr "{status} Джоин Фильтр"
+
+#: app/utils/sleep_tracker.py:21
+msgid "Ok"
+msgstr "Хорошо"
+
+#: app/utils/sleep_tracker.py:22
+msgid "Fresh"
+msgstr "Бодро"
+
+#: app/utils/sleep_tracker.py:23
+msgid "Sleepy"
+msgstr "Сонно"
+
+#: app/utils/sleep_tracker.py:24
+msgid "Tired"
+msgstr "Устало"

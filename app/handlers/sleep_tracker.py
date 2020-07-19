@@ -1,5 +1,6 @@
 import pendulum
 from aiogram import types
+from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.markdown import hbold, hitalic
 from loguru import logger
 from pendulum import Duration, Period
@@ -14,7 +15,9 @@ from app.utils.sleep_tracker import (
     as_datetime,
     as_month,
     as_short_date,
+    cb_moods,
     get_explicit_stats,
+    get_moods_markup,
     get_stats_by_day,
     parse_timezone,
     subtract_from,
@@ -59,6 +62,29 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
         ),
     ]
     await message.answer("\n".join(text))
+    await message.answer(
+        _("How do you feel?"), reply_markup=get_moods_markup(record.id)
+    )
+
+
+@dp.callback_query_handler(cb_moods.filter())
+async def cq_user_wakeup_mood(
+    query: types.CallbackQuery, user: User, callback_data: dict
+):
+    logger.info(
+        "User {user} logged his mood", user=query.from_user.id,
+    )
+    mood = callback_data["mood"]
+    emoji = callback_data["emoji"]
+    mood_text = mood + emoji
+    sleep_record: SleepRecord = await SleepRecord.get(int(callback_data["record_id"]))
+    await sleep_record.update(mood=mood, emoji=emoji).apply()
+
+    text = [_("Mood this morning"), mood_text]
+    await query.answer()
+    await query.message.edit_text(
+        text="\n".join(text), reply_markup=InlineKeyboardMarkup()
+    )
 
 
 @dp.message_handler(text_startswith="!м")

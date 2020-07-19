@@ -1,6 +1,8 @@
 from typing import List, Union
 
 import pendulum
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.utils.callback_data import CallbackData
 from aiogram.utils.markdown import hbold
 from loguru import logger
 from pendulum import DateTime, Duration, Period
@@ -11,6 +13,33 @@ from app.models.sleep_record import SleepRecord
 
 _ = i18n.gettext
 datetime_fmtr = pendulum.Formatter()
+
+cb_moods = CallbackData("user", "record_id", "mood", "emoji")
+
+
+def get_moods_markup(record_id) -> InlineKeyboardMarkup:
+    mood_ok = _("Ok")
+    mood_fresh = _("Fresh")
+    mood_sleepy = _("Sleepy")
+    mood_tired = _("Tired")
+    moods_rows = [
+        [(mood_ok, "🙂"), (mood_fresh, "😊")],
+        [(mood_sleepy, "😴"), (mood_tired, "😞")],
+    ]
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=_(mood + emoji),
+                    callback_data=cb_moods.new(
+                        record_id=record_id, mood=mood, emoji=emoji
+                    ),
+                )
+                for mood, emoji in moods
+            ]
+            for moods in moods_rows
+        ]
+    )
 
 
 def subtract_from(date: DateTime, diff: str, period: str) -> DateTime:
@@ -45,6 +74,7 @@ def get_explicit_stats(records: List[SleepRecord], tz, language):
                     hours=interval.hours, minutes=interval.minutes,
                 )
             )
+            + (f"({record.emoji})" if record.emoji else "")
         )
 
 

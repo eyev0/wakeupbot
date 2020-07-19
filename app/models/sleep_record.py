@@ -11,6 +11,9 @@ class SleepRecord(UserRelatedModel, TimedBaseModel):
 
     id = db.Column(db.Integer, primary_key=True, index=True, unique=True)
     check_wakeup = db.Column(db.Boolean, default=expression.false())
+    mood = db.Column(db.String)
+    emoji = db.Column(db.String)
+    note = db.Column(db.String)
 
 
 class SleepRecordRelatedModel(BaseModel):
