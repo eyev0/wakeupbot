@@ -3,7 +3,7 @@ from aiogram import types
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.markdown import hbold, hitalic
 from loguru import logger
-from pendulum import Duration, Period
+from pendulum import Period
 from sqlalchemy import and_
 
 from app.middlewares.i18n import i18n
@@ -16,9 +16,9 @@ from app.utils.sleep_tracker import (
     as_month,
     as_short_date,
     cb_moods,
-    get_explicit_stats,
+    get_average_sleep,
     get_moods_markup,
-    get_stats_by_day,
+    get_records_stats,
     parse_timezone,
     subtract_from,
 )
@@ -102,7 +102,9 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     except ValueError:
         await message.answer(_("Wrong option! - {option}").format(option=message.text))
         return
-    start = pendulum.instance(
+
+    monthly_records = []
+    start_dt = pendulum.instance(
         now.replace(
             year=dt.year,
             month=dt.month,
@@ -113,48 +115,77 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
             microsecond=0,
         )
     )
-    end = start.add(months=1)
-
-    sleep_records = (
-        await SleepRecord.query.where(
-            and_(
-                SleepRecord.user_id == user.id,
-                SleepRecord.created_at >= start,
-                SleepRecord.created_at <= end,
-            )
-        )
-        .order_by(SleepRecord.created_at)
-        .gino.all()
-    )
-
-    explicit_stats = [x for x in get_explicit_stats(sleep_records, tz, chat.language)]
-    grouped_by_day = [
-        x
-        for x in get_stats_by_day(
-            sleep_records, tz, chat.language, mode="month", days=start.days_in_month
-        )
-    ]
-    avg_sleep_per_day = Duration(
-        seconds=sum(map(lambda x: x.in_seconds(), grouped_by_day))
-        / max(len(grouped_by_day), 1)
-    )
-
     text = [
         hbold(
             _("Monthly stats for {month_year}: ").format(
                 month_year=as_month(dt, tz, chat.language)
             )
         ),
-        "",
-        *explicit_stats,
-        "",
-        hbold(_("Average sleep hours per day:")),
-        hbold(
-            _("{hours}h {minutes}min").format(
-                hours=avg_sleep_per_day.hours, minutes=avg_sleep_per_day.minutes,
-            )
-        ),
     ]
+
+    end_dt = start_dt.add(weeks=1)
+    if end_dt.day_of_week != 0:
+        end_dt = end_dt.subtract(days=end_dt.day_of_week - 1)
+
+    break_ = False
+    while not break_:
+        if end_dt.month != start_dt.month:
+            end_dt = end_dt.subtract(days=end_dt.day)
+            break_ = True
+        weekly_records = (
+            await SleepRecord.query.where(
+                and_(
+                    SleepRecord.user_id == user.id,
+                    SleepRecord.created_at >= start_dt,
+                    SleepRecord.created_at <= end_dt,
+                )
+            )
+            .order_by(SleepRecord.created_at)
+            .gino.all()
+        )
+        if weekly_records:
+            monthly_records.extend(weekly_records)
+            explicit_stats = get_records_stats(weekly_records, tz, chat.language)
+            avg_sleep_per_day = get_average_sleep(weekly_records, tz, chat.language)
+            text.extend(
+                [
+                    "",
+                    hbold(
+                        _("{start} - {end}: ").format(
+                            start=as_short_date(start_dt, tz, chat.language),
+                            end=as_short_date(end_dt, tz, chat.language),
+                        )
+                    ),
+                    *explicit_stats,
+                    hbold(_("Average sleep:")),
+                    hbold(
+                        _("{hours}h {minutes}min").format(
+                            hours=avg_sleep_per_day.hours,
+                            minutes=avg_sleep_per_day.minutes,
+                        )
+                    ),
+                ]
+            )
+        if break_:
+            break
+        end_dt = end_dt.add(weeks=1)
+        start_dt = end_dt.subtract(weeks=1)
+
+    avg_sleep_per_day = get_average_sleep(
+        monthly_records, tz, chat.language, mode="month", days=start_dt.days_in_month
+    )
+
+    text.extend(
+        [
+            "",
+            hbold(_("Montly average sleep:")),
+            hbold(
+                _("{hours}h {minutes}min").format(
+                    hours=avg_sleep_per_day.hours, minutes=avg_sleep_per_day.minutes,
+                )
+            ),
+        ]
+    )
     await message.answer("\n".join(text))
 
 
@@ -170,37 +201,33 @@ async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
     except ValueError:
         await message.answer(_("Wrong option! - {option}").format(option=message.text))
         return
-    start = pendulum.instance(
+    start_dt = pendulum.instance(
         dt.subtract(days=dt.weekday()).replace(
             hour=0, minute=0, second=0, microsecond=0,
         )
     )
-    end = start.add(weeks=1)
+    end_dt = start_dt.add(weeks=1)
 
-    sleep_records = (
+    weekly_records = (
         await SleepRecord.query.where(
             and_(
                 SleepRecord.user_id == user.id,
-                SleepRecord.created_at >= start,
-                SleepRecord.created_at <= end,
+                SleepRecord.created_at >= start_dt,
+                SleepRecord.created_at <= end_dt,
             )
         )
         .order_by(SleepRecord.created_at)
         .gino.all()
     )
 
-    explicit_stats = [x for x in get_explicit_stats(sleep_records, tz, chat.language)]
-    grouped_by_day = [x for x in get_stats_by_day(sleep_records, tz, chat.language)]
-    avg_sleep_per_day = Duration(
-        seconds=sum(map(lambda x: x.in_seconds(), grouped_by_day))
-        / max(len(grouped_by_day), 1)
-    )
+    explicit_stats = get_records_stats(weekly_records, tz, chat.language)
+    avg_sleep_per_day = get_average_sleep(weekly_records, tz, chat.language)
 
     text = [
         hbold(
             _("Weekly stats ({start} - {end}): ").format(
-                start=as_short_date(start, tz, chat.language),
-                end=as_short_date(end, tz, chat.language),
+                start=as_short_date(start_dt, tz, chat.language),
+                end=as_short_date(end_dt, tz, chat.language),
             )
         ),
         "",

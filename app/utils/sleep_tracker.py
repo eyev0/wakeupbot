@@ -59,12 +59,13 @@ def subtract_from(date: DateTime, diff: str, period: str) -> DateTime:
     return new_dt
 
 
-def get_explicit_stats(records: List[SleepRecord], tz, language):
+def get_records_stats(records: List[SleepRecord], tz, language):
+    result = []
     for record in records:
         dt_created_at = pendulum.instance(record.created_at)
         dt_updated_at = pendulum.instance(record.updated_at)
         interval = Period(dt_created_at, dt_updated_at).as_interval()
-        yield (
+        result.append(
             f"{as_datetime(dt_created_at, tz, language)}"
             + " - "
             + f"{as_datetime(dt_updated_at, tz, language)}"
@@ -76,9 +77,12 @@ def get_explicit_stats(records: List[SleepRecord], tz, language):
             )
             + (f"({record.emoji})" if record.emoji else "")
         )
+    return result
 
 
-def get_stats_by_day(records: List[SleepRecord], tz, language, mode="week", days=7):
+def get_stats_grouped_by_day(
+    records: List[SleepRecord], tz, language, mode="week", days=7
+):
     if mode == "week":
         get_day_func = as_weekday
     elif mode == "month":
@@ -86,7 +90,8 @@ def get_stats_by_day(records: List[SleepRecord], tz, language, mode="week", days
         get_day_func = as_day
     else:
         return []
-    result = [Duration() for i in range(days)]
+    tmp_res = [Duration() for i in range(days)]
+    result = []
 
     latenight_offset = Duration(hours=5)
     offset_tz = FixedTimezone(offset=tz.offset - latenight_offset.in_seconds())
@@ -95,9 +100,21 @@ def get_stats_by_day(records: List[SleepRecord], tz, language, mode="week", days
         dt_updated_at = pendulum.instance(record.updated_at)
         interval = Period(dt_created_at, dt_updated_at).as_interval()
         i = int(get_day_func(dt_created_at, offset_tz))
-        result[i] = result[i] + interval
-    for x in filter(lambda a: a.in_seconds() > 0, result):
-        yield x
+        tmp_res[i] = tmp_res[i] + interval
+    for x in filter(lambda a: a.in_seconds() > 0, tmp_res):
+        result.append(x)
+    return result
+
+
+def get_average_sleep(records: List[SleepRecord], tz, language, mode="week", days=7):
+    grouped_by_day = get_stats_grouped_by_day(
+        records, tz, language, mode=mode, days=days
+    )
+    avg_sleep_per_day = Duration(
+        seconds=sum(map(lambda x: x.in_seconds(), grouped_by_day))
+        / max(len(grouped_by_day), 1)
+    )
+    return avg_sleep_per_day
 
 
 def parse_timezone(timezone: str) -> Union[FixedTimezone, None]:
