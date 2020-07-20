@@ -13,18 +13,18 @@ from app.models.sleep_record import SleepRecord
 
 _ = i18n.gettext
 datetime_fmtr = pendulum.Formatter()
-
+latenight_offset = Duration(hours=5)
 cb_moods = CallbackData("user", "record_id", "mood", "emoji")
 
 
 def get_moods_markup(record_id) -> InlineKeyboardMarkup:
-    mood_ok = _("Ok")
-    mood_fresh = _("Fresh")
-    mood_sleepy = _("Sleepy")
-    mood_tired = _("Tired")
+    mood_ok = (_("Ok"), "🙂")
+    mood_well_slept = (_("Well slept"), "😃️")
+    mood_sluggish = (_("Sluggish"), "😪")
+    mood_sleepy = (_("Sleepy"), "😴")
     moods_rows = [
-        [(mood_ok, "🙂"), (mood_fresh, "😊")],
-        [(mood_sleepy, "😴"), (mood_tired, "😞")],
+        [mood_ok, mood_well_slept],
+        [mood_sluggish, mood_sleepy],
     ]
     return InlineKeyboardMarkup(
         inline_keyboard=[
@@ -63,12 +63,17 @@ def get_records_stats(records: List[SleepRecord], tz, language):
     result = []
     for record in records:
         dt_created_at = pendulum.instance(record.created_at)
+        dt_created_at_fixed_weekday = dt_created_at.subtract(
+            seconds=latenight_offset.in_seconds()
+        )
         dt_updated_at = pendulum.instance(record.updated_at)
         interval = Period(dt_created_at, dt_updated_at).as_interval()
         result.append(
-            f"{as_datetime(dt_created_at, tz, language)}"
+            f"{as_weekday(dt_created_at_fixed_weekday, tz, language)}, "
+            + f"{as_short_date(dt_created_at_fixed_weekday, tz, language)} "
+            + f"{as_time(dt_created_at, tz)}"
             + " - "
-            + f"{as_datetime(dt_updated_at, tz, language)}"
+            + f"{as_time(dt_updated_at, tz)}"
             + " -- "
             + hbold(
                 _("{hours}h {minutes}min").format(
@@ -84,7 +89,7 @@ def get_stats_grouped_by_day(
     records: List[SleepRecord], tz, language, mode="week", days=7
 ):
     if mode == "week":
-        get_day_func = as_weekday
+        get_day_func = as_weekday_int
     elif mode == "month":
         days = days + 1
         get_day_func = as_day
@@ -92,14 +97,14 @@ def get_stats_grouped_by_day(
         return []
     tmp_res = [Duration() for i in range(days)]
     result = []
-
-    latenight_offset = Duration(hours=5)
-    offset_tz = FixedTimezone(offset=tz.offset - latenight_offset.in_seconds())
     for record in records:
         dt_created_at = pendulum.instance(record.created_at)
+        dt_created_at_fixed_weekday = dt_created_at.subtract(
+            seconds=latenight_offset.in_seconds()
+        )
         dt_updated_at = pendulum.instance(record.updated_at)
         interval = Period(dt_created_at, dt_updated_at).as_interval()
-        i = int(get_day_func(dt_created_at, offset_tz))
+        i = int(get_day_func(dt_created_at_fixed_weekday, tz))
         tmp_res[i] = tmp_res[i] + interval
     for x in filter(lambda a: a.in_seconds() > 0, tmp_res):
         result.append(x)
@@ -150,7 +155,15 @@ def as_datetime(dt: DateTime, tz, locale):
     return datetime_fmtr.format(dt.in_tz(tz), "D MMMM, dd HH:mm:ss", locale)
 
 
-def as_weekday(dt: DateTime, tz):
+def as_time(dt: DateTime, tz):
+    return datetime_fmtr.format(dt.in_tz(tz), "HH:mm:ss")
+
+
+def as_weekday(dt: DateTime, tz, locale):
+    return datetime_fmtr.format(dt.in_tz(tz), "dd", locale)
+
+
+def as_weekday_int(dt: DateTime, tz):
     return datetime_fmtr.format(dt.in_tz(tz), "d")
 
 

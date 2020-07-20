@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-19 15:39+0300\n"
+"POT-Creation-Date: 2020-07-20 23:00+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -127,37 +127,37 @@ msgstr ""
 msgid "Settings saved"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:33
+#: app/handlers/sleep_tracker.py:34
 msgid "Good night.."
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:52
+#: app/handlers/sleep_tracker.py:53
 msgid "Good morning!"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:53
+#: app/handlers/sleep_tracker.py:54
 msgid "Your sleep:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:59 app/handlers/sleep_tracker.py:162
-#: app/handlers/sleep_tracker.py:183 app/handlers/sleep_tracker.py:238
-#: app/utils/sleep_tracker.py:74
+#: app/handlers/sleep_tracker.py:60 app/handlers/sleep_tracker.py:162
+#: app/handlers/sleep_tracker.py:183 app/handlers/sleep_tracker.py:237
+#: app/utils/sleep_tracker.py:79
 msgid "{hours}h {minutes}min"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:66
+#: app/handlers/sleep_tracker.py:67
 msgid "How do you feel?"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:83
+#: app/handlers/sleep_tracker.py:84
 msgid "Mood this morning"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:103 app/handlers/sleep_tracker.py:202
+#: app/handlers/sleep_tracker.py:104 app/handlers/sleep_tracker.py:202
 msgid "Wrong option! - {option}"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:120
+#: app/handlers/sleep_tracker.py:121
 msgid "Monthly stats for {month_year}: "
 msgstr ""
 
@@ -165,7 +165,7 @@ msgstr ""
 msgid "{start} - {end}: "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:160
+#: app/handlers/sleep_tracker.py:160 app/handlers/sleep_tracker.py:235
 msgid "Average sleep:"
 msgstr ""
 
@@ -175,10 +175,6 @@ msgstr ""
 
 #: app/handlers/sleep_tracker.py:228
 msgid "Weekly stats ({start} - {end}): "
-msgstr ""
-
-#: app/handlers/sleep_tracker.py:236
-msgid "Average sleep hours per day:"
 msgstr ""
 
 #: app/handlers/superuser.py:26
@@ -222,16 +218,25 @@ msgid "Ok"
 msgstr ""
 
 #: app/utils/sleep_tracker.py:22
-msgid "Fresh"
+msgid "Well slept"
 msgstr ""
 
 #: app/utils/sleep_tracker.py:23
-msgid "Sleepy"
+msgid "Sluggish"
 msgstr ""
 
 #: app/utils/sleep_tracker.py:24
-msgid "Tired"
+msgid "Sleepy"
 msgstr ""
 
 #~ msgid "Montly average sleep:"
+#~ msgstr ""
+
+#~ msgid "Fresh"
+#~ msgstr ""
+
+#~ msgid "Tired"
+#~ msgstr ""
+
+#~ msgid "Average sleep hours per day:"
 #~ msgstr ""

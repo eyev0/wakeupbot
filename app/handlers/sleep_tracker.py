@@ -19,6 +19,7 @@ from app.utils.sleep_tracker import (
     get_average_sleep,
     get_moods_markup,
     get_records_stats,
+    latenight_offset,
     parse_timezone,
     subtract_from,
 )
@@ -114,7 +115,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
             second=0,
             microsecond=0,
         )
-    )
+    ).add(seconds=latenight_offset.in_seconds())
     text = [
         hbold(
             _("Monthly stats for {month_year}: ").format(
@@ -124,8 +125,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     ]
 
     end_dt = start_dt.add(weeks=1)
-    if end_dt.day_of_week != 0:
-        end_dt = end_dt.subtract(days=end_dt.day_of_week - 1)
+    end_dt = end_dt.subtract(days=max(end_dt.day_of_week - 1, 0))
 
     break_ = False
     while not break_:
@@ -205,7 +205,7 @@ async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
         dt.subtract(days=dt.weekday()).replace(
             hour=0, minute=0, second=0, microsecond=0,
         )
-    )
+    ).add(seconds=latenight_offset.in_seconds())
     end_dt = start_dt.add(weeks=1)
 
     weekly_records = (
@@ -232,8 +232,7 @@ async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
         ),
         "",
         *explicit_stats,
-        "",
-        hbold(_("Average sleep hours per day:")),
+        hbold(_("Average sleep:")),
         hbold(
             _("{hours}h {minutes}min").format(
                 hours=avg_sleep_per_day.hours, minutes=avg_sleep_per_day.minutes,
