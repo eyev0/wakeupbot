@@ -37,24 +37,18 @@ async def sleep_start(message: types.Message, user: User):
 @dp.message_handler(text="+", user_awake=False)
 async def sleep_end(message: types.Message, user: User, chat: Chat):
     logger.info("User {user} is waking up now", user=message.from_user.id)
+    now = pendulum.now()
     record: SleepRecord = await SleepRecord.query.where(
-        and_(SleepRecord.user_id == user.id, SleepRecord.check_wakeup == False)  # noqa
+        and_(SleepRecord.user_id == user.id, SleepRecord.wakeup_time == None)  # noqa
     ).gino.first()
-    record_id = record.id
-    await record.update(check_wakeup=True).apply()
-    record: SleepRecord = await SleepRecord.get(record_id)
-
     tz = parse_timezone(user.timezone)
-    interval = Period(record.created_at, record.updated_at).as_interval()
-    dt_created_at = pendulum.instance(record.created_at)
-    dt_updated_at = pendulum.instance(record.updated_at)
-
+    interval = Period(record.created_at, now).as_interval()
     text = [
         hbold(_("Good morning!")),
         _("Your sleep:"),
-        f"{as_datetime(dt_created_at, tz, chat.language)}"
+        f"{as_datetime(pendulum.instance(record.created_at), tz, chat.language)}"
         + " - "
-        + f"{as_datetime(dt_updated_at, tz, chat.language)}"
+        + f"{as_datetime(now, tz, chat.language)}"
         + " -- "
         + hbold(
             _("{hours}h {minutes}min").format(
@@ -62,6 +56,7 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
             )
         ),
     ]
+    await record.update(wakeup_time=now).apply()
     await message.answer("\n".join(text))
     await message.answer(
         _("How do you feel?"), reply_markup=get_moods_markup(record.id)
@@ -168,8 +163,8 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
             )
         if break_:
             break
+        start_dt = end_dt
         end_dt = end_dt.add(weeks=1)
-        start_dt = end_dt.subtract(weeks=1)
 
     avg_sleep_per_day = get_average_sleep(
         monthly_records, tz, chat.language, mode="month", days=start_dt.days_in_month

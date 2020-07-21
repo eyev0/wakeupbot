@@ -18,8 +18,7 @@ class UserAwakeFilter(BoundFilter):
         user: User = data["user"]
         record = await SleepRecord.query.where(
             and_(
-                SleepRecord.user_id == user.id,
-                SleepRecord.check_wakeup == False,  # noqa
+                SleepRecord.user_id == user.id, SleepRecord.wakeup_time == None,  # noqa
             )
         ).gino.first()
         return (record is None) == self.user_awake

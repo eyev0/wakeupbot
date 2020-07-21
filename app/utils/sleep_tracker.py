@@ -62,18 +62,18 @@ def subtract_from(date: DateTime, diff: str, period: str) -> DateTime:
 def get_records_stats(records: List[SleepRecord], tz, language):
     result = []
     for record in records:
-        dt_created_at = pendulum.instance(record.created_at)
-        dt_created_at_fixed_weekday = dt_created_at.subtract(
+        dt_start = pendulum.instance(record.created_at)
+        dt_start_fixed_weekday = dt_start.subtract(
             seconds=latenight_offset.in_seconds()
         )
-        dt_updated_at = pendulum.instance(record.updated_at)
-        interval = Period(dt_created_at, dt_updated_at).as_interval()
+        dt_end = pendulum.instance(record.wakeup_time)
+        interval = Period(dt_start, dt_end).as_interval()
         result.append(
-            f"{as_weekday(dt_created_at_fixed_weekday, tz, language)}, "
-            + f"{as_short_date(dt_created_at_fixed_weekday, tz, language)} "
-            + f"{as_time(dt_created_at, tz)}"
+            f"{as_weekday(dt_start_fixed_weekday, tz, language)}, "
+            + f"{as_short_date(dt_start_fixed_weekday, tz, language)} "
+            + f"{as_time(dt_start, tz)}"
             + " - "
-            + f"{as_time(dt_updated_at, tz)}"
+            + f"{as_time(dt_end, tz)}"
             + " -- "
             + hbold(
                 _("{hours}h {minutes}min").format(
@@ -98,13 +98,13 @@ def get_stats_grouped_by_day(
     tmp_res = [Duration() for i in range(days)]
     result = []
     for record in records:
-        dt_created_at = pendulum.instance(record.created_at)
-        dt_created_at_fixed_weekday = dt_created_at.subtract(
+        dt_start = pendulum.instance(record.created_at)
+        dt_start_fixed_weekday = dt_start.subtract(
             seconds=latenight_offset.in_seconds()
         )
-        dt_updated_at = pendulum.instance(record.updated_at)
-        interval = Period(dt_created_at, dt_updated_at).as_interval()
-        i = int(get_day_func(dt_created_at_fixed_weekday, tz))
+        dt_end = pendulum.instance(record.wakeup_time)
+        interval = Period(dt_start, dt_end).as_interval()
+        i = int(get_day_func(dt_start_fixed_weekday, tz))
         tmp_res[i] = tmp_res[i] + interval
     for x in filter(lambda a: a.in_seconds() > 0, tmp_res):
         result.append(x)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-20 23:00+0300\n"
+"POT-Creation-Date: 2020-07-21 14:56+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -141,49 +141,49 @@ msgstr "Настройки сохранены"
 msgid "Good night.."
 msgstr "Спокойной ночи.."
 
-#: app/handlers/sleep_tracker.py:53
+#: app/handlers/sleep_tracker.py:47
 msgid "Good morning!"
 msgstr "Доброе утро!"
 
-#: app/handlers/sleep_tracker.py:54
+#: app/handlers/sleep_tracker.py:48
 msgid "Your sleep:"
 msgstr "Сон:"
 
-#: app/handlers/sleep_tracker.py:60 app/handlers/sleep_tracker.py:162
-#: app/handlers/sleep_tracker.py:183 app/handlers/sleep_tracker.py:237
+#: app/handlers/sleep_tracker.py:54 app/handlers/sleep_tracker.py:157
+#: app/handlers/sleep_tracker.py:178 app/handlers/sleep_tracker.py:232
 #: app/utils/sleep_tracker.py:79
 msgid "{hours}h {minutes}min"
 msgstr "{hours}ч {minutes}мин"
 
-#: app/handlers/sleep_tracker.py:67
+#: app/handlers/sleep_tracker.py:62
 msgid "How do you feel?"
 msgstr "Как ты себя чувствуешь после сна?"
 
-#: app/handlers/sleep_tracker.py:84
+#: app/handlers/sleep_tracker.py:79
 msgid "Mood this morning"
 msgstr "Самочувствие этим утром"
 
-#: app/handlers/sleep_tracker.py:104 app/handlers/sleep_tracker.py:202
+#: app/handlers/sleep_tracker.py:99 app/handlers/sleep_tracker.py:197
 msgid "Wrong option! - {option}"
 msgstr "Неправильная опция! - {option}"
 
-#: app/handlers/sleep_tracker.py:121
+#: app/handlers/sleep_tracker.py:116
 msgid "Monthly stats for {month_year}: "
 msgstr "Статистика {month_year}: "
 
-#: app/handlers/sleep_tracker.py:154
+#: app/handlers/sleep_tracker.py:149
 msgid "{start} - {end}: "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:160 app/handlers/sleep_tracker.py:235
+#: app/handlers/sleep_tracker.py:155 app/handlers/sleep_tracker.py:230
 msgid "Average sleep:"
 msgstr "Сна в среднем:"
 
-#: app/handlers/sleep_tracker.py:181
+#: app/handlers/sleep_tracker.py:176
 msgid "Monthly average sleep:"
 msgstr "Сна в среднем за месяц:"
 
-#: app/handlers/sleep_tracker.py:228
+#: app/handlers/sleep_tracker.py:223
 msgid "Weekly stats ({start} - {end}): "
 msgstr "Статистика за неделю ({start} - {end}): "
 
