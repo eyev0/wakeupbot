@@ -125,7 +125,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     break_ = False
     while not break_:
         if end_dt.month != start_dt.month:
-            end_dt = end_dt.subtract(days=end_dt.day)
+            end_dt = end_dt.subtract(days=end_dt.day - 1)
             break_ = True
         weekly_records = (
             await SleepRecord.query.where(
