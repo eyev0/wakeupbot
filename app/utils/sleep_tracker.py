@@ -134,6 +134,15 @@ def parse_timezone(timezone: str) -> Union[FixedTimezone, None]:
         raise e
 
 
+def duration_from_timezone(timezone: Union[FixedTimezone, str]) -> Duration:
+    if isinstance(timezone, FixedTimezone):
+        timezone = timezone.name
+    hours, *minutes = timezone[1:].split(":", maxsplit=1)
+    minutes = minutes[-1] if minutes else "0"
+    duration = pendulum.Duration(hours=int(hours), minutes=int(minutes))
+    return duration
+
+
 def parse_time(time: str) -> Union[Time, None]:
     try:
         hours, *minutes = time.split(":", maxsplit=1)
@@ -142,15 +151,6 @@ def parse_time(time: str) -> Union[Time, None]:
     except ValueError as e:
         logger.info(f"Wrong time format: {time}")
         raise e
-
-
-def duration_from_timezone(timezone: Union[FixedTimezone, str]) -> Duration:
-    if isinstance(timezone, FixedTimezone):
-        timezone = timezone.name
-    hours, *minutes = timezone[1:].split(":", maxsplit=1)
-    minutes = minutes[-1] if minutes else "0"
-    duration = pendulum.Duration(hours=int(hours), minutes=int(minutes))
-    return duration
 
 
 def as_short_date(dt: DateTime, tz, locale):
