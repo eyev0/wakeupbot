@@ -140,6 +140,8 @@ async def user_settings_set_time_zone(
     if original_message_id := state_data.get("original_message_id"):
         with suppress(MessageCantBeDeleted):
             await bot.delete_message(chat.id, original_message_id)
+        with suppress(MessageCantBeDeleted):
+            await message.delete()
         text, markup = get_user_settings_markup(chat, user)
         await message.answer(
             _("Time zone changed to {timezone}").format(timezone=tz.name),
@@ -169,6 +171,8 @@ async def user_settings_set_bedtime_reminder(
     if original_message_id := state_data.get("original_message_id"):
         with suppress(MessageCantBeDeleted):
             await bot.delete_message(chat.id, original_message_id)
+        with suppress(MessageCantBeDeleted):
+            await message.delete()
         text, markup = get_user_settings_markup(chat, user)
         await message.answer(
             _("Bedtime reminder changed to {time}").format(time=time),
