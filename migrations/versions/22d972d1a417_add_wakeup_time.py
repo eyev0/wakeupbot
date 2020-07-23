@@ -22,6 +22,9 @@ def upgrade():
         sa.Column("wakeup_time", sa.DateTime(timezone=True), nullable=True),
     )
     # ### end Alembic commands ###
+    op.execute(
+        "UPDATE sleep_records SET wakeup_time = updated_at WHERE check_wakeup = 1"
+    )
 
 
 def downgrade():
