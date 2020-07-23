@@ -5,7 +5,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 from aiogram.utils.markdown import hbold
 from loguru import logger
-from pendulum import DateTime, Duration, Period
+from pendulum import DateTime, Duration, Period, Time
 from pendulum.tz.timezone import FixedTimezone
 
 from app.middlewares.i18n import i18n
@@ -131,6 +131,16 @@ def parse_timezone(timezone: str) -> Union[FixedTimezone, None]:
         return pendulum.tz.fixed_timezone(int(sign + "1") * offset.in_seconds())
     except ValueError as e:
         logger.info(f"Wrong timezone format: {timezone}")
+        raise e
+
+
+def parse_time(time: str) -> Union[Time, None]:
+    try:
+        hours, *minutes = time.split(":", maxsplit=1)
+        minutes = minutes[-1] if minutes else "0"
+        return pendulum.Time(hour=int(hours), minute=int(minutes))
+    except ValueError as e:
+        logger.info(f"Wrong time format: {time}")
         raise e
 
 

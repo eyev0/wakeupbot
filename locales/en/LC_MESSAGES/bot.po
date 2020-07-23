@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-21 14:56+0300\n"
+"POT-Creation-Date: 2020-07-23 12:37+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -71,59 +71,71 @@ msgstr ""
 msgid "{command} - User settings"
 msgstr ""
 
-#: app/handlers/chat_settings.py:42
+#: app/handlers/chat_settings.py:47
 msgid "Your current time zone: {timezone}\n"
 msgstr ""
 
-#: app/handlers/chat_settings.py:43
+#: app/handlers/chat_settings.py:48
 msgid "Enter your time zone ("
 msgstr ""
 
-#: app/handlers/chat_settings.py:44
+#: app/handlers/chat_settings.py:49 app/handlers/chat_settings.py:85
 msgid "example: "
 msgstr ""
 
-#: app/handlers/chat_settings.py:53
+#: app/handlers/chat_settings.py:58 app/handlers/chat_settings.py:94
 msgid "Cancel"
 msgstr ""
 
-#: app/handlers/chat_settings.py:74
+#: app/handlers/chat_settings.py:83
+msgid "Your current bedtime reminder: {reminder}\n"
+msgstr ""
+
+#: app/handlers/chat_settings.py:84
+msgid "Enter new time ("
+msgstr ""
+
+#: app/handlers/chat_settings.py:118
 msgid "Action cancelled"
 msgstr ""
 
-#: app/handlers/chat_settings.py:83
-msgid "Choose your timezone or press cancel"
-msgstr ""
-
-#: app/handlers/chat_settings.py:95
+#: app/handlers/chat_settings.py:135
 msgid "Wrong format! See examples above"
 msgstr ""
 
-#: app/handlers/chat_settings.py:98
+#: app/handlers/chat_settings.py:145
 msgid "Time zone changed to {timezone}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:119
+#: app/handlers/chat_settings.py:164
+msgid "Wrong time format!"
+msgstr ""
+
+#: app/handlers/chat_settings.py:174
+msgid "Bedtime reminder changed to {time}"
+msgstr ""
+
+#: app/handlers/chat_settings.py:198
 msgid "Choose chat language"
 msgstr ""
 
-#: app/handlers/chat_settings.py:146
+#: app/handlers/chat_settings.py:225
 msgid "Language changed to {new_language}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:161
+#: app/handlers/chat_settings.py:240
 msgid "Do not disturb mode {mode}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:162
+#: app/handlers/chat_settings.py:241
 msgid "switched on"
 msgstr ""
 
-#: app/handlers/chat_settings.py:162
+#: app/handlers/chat_settings.py:241
 msgid "switched off"
 msgstr ""
 
-#: app/handlers/chat_settings.py:176
+#: app/handlers/chat_settings.py:255
 msgid "Settings saved"
 msgstr ""
 
@@ -190,26 +202,30 @@ msgid "Personal settings"
 msgstr ""
 
 #: app/utils/chat_settings.py:29
-msgid "Time zone"
+msgid "Bedtime reminder: {reminder}"
 msgstr ""
 
-#: app/utils/chat_settings.py:37
+#: app/utils/chat_settings.py:39
+msgid "Time zone: {timezone}"
+msgstr ""
+
+#: app/utils/chat_settings.py:47
 msgid "{status} Do not disturb"
 msgstr ""
 
-#: app/utils/chat_settings.py:47 app/utils/chat_settings.py:89
+#: app/utils/chat_settings.py:57 app/utils/chat_settings.py:99
 msgid "{flag} Language"
 msgstr ""
 
-#: app/utils/chat_settings.py:57 app/utils/chat_settings.py:99
+#: app/utils/chat_settings.py:67 app/utils/chat_settings.py:109
 msgid "Done"
 msgstr ""
 
-#: app/utils/chat_settings.py:72
+#: app/utils/chat_settings.py:82
 msgid "Settings for chat {chat_title}"
 msgstr ""
 
-#: app/utils/chat_settings.py:79
+#: app/utils/chat_settings.py:89
 msgid "{status} Join filter"
 msgstr ""
 
@@ -239,4 +255,10 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Average sleep hours per day:"
+#~ msgstr ""
+
+#~ msgid "Choose your timezone or press cancel"
+#~ msgstr ""
+
+#~ msgid "Time zone"
 #~ msgstr ""

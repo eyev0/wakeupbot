@@ -26,7 +26,17 @@ def get_user_settings_markup(
             inline_keyboard=[
                 [
                     InlineKeyboardButton(
-                        text=_("Time zone"),
+                        text=_("Bedtime reminder: {reminder}").format(
+                            reminder=user.reminder
+                        ),
+                        callback_data=cb_user_settings.new(
+                            property="bedtime_reminder", value="set"
+                        ),
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text=_("Time zone: {timezone}").format(timezone=user.timezone),
                         callback_data=cb_user_settings.new(
                             property="time_zone", value="set"
                         ),
