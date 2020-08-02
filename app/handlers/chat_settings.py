@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import suppress
 
 from aiogram import types
@@ -8,14 +9,16 @@ from aiogram.types import ContentTypes
 from aiogram.utils.exceptions import MessageCantBeDeleted, MessageNotModified
 from aiogram.utils.markdown import hcode, hitalic
 from loguru import logger
+from pendulum import DateTime
 
 from app.middlewares.i18n import i18n
 from app.misc import bot, dp
 from app.models.chat import Chat
 from app.models.user import User
+from app.utils import scheduler
 from app.utils.chat_settings import cb_user_settings, get_user_settings_markup
-from app.utils.sleep_tracker import parse_time, parse_timezone
 from app.utils.states import States
+from app.utils.time import VISUAL_GRACE_TIME, parse_time, parse_tz
 
 _ = i18n.gettext
 
@@ -130,17 +133,20 @@ async def user_settings_set_time_zone(
         "User {user} wants to set his timezone preference", user=message.from_user.id,
     )
     try:
-        tz = parse_timezone(message.text)
+        tz = parse_tz(message.text)
     except ValueError:
         await message.answer(_("Wrong format! See examples above"))
         return
     await user.update(timezone=tz.name).apply()
+    await scheduler.reschedule_user_reminder_job(user, tz=tz)
 
     state_data = await state.get_data() or {}
     if original_message_id := state_data.get("original_message_id"):
         with suppress(MessageCantBeDeleted):
+            await asyncio.sleep(VISUAL_GRACE_TIME)
             await bot.delete_message(chat.id, original_message_id)
         with suppress(MessageCantBeDeleted):
+            await asyncio.sleep(VISUAL_GRACE_TIME)
             await message.delete()
         text, markup = get_user_settings_markup(chat, user)
         await message.answer(
@@ -161,21 +167,24 @@ async def user_settings_set_bedtime_reminder(
         "User {user} wants to set his bedtime reminder", user=message.from_user.id,
     )
     try:
-        time = parse_time(message.text).format("HH:mm")
+        time: DateTime = parse_time(message.text)
     except ValueError:
         await message.answer(_("Wrong time format!"))
         return
-    await user.update(reminder=time).apply()
+    await user.update(reminder=time.format("HH:mm")).apply()
+    await scheduler.reschedule_user_reminder_job(user, time=time)
 
     state_data = await state.get_data() or {}
     if original_message_id := state_data.get("original_message_id"):
         with suppress(MessageCantBeDeleted):
+            await asyncio.sleep(VISUAL_GRACE_TIME)
             await bot.delete_message(chat.id, original_message_id)
         with suppress(MessageCantBeDeleted):
+            await asyncio.sleep(VISUAL_GRACE_TIME)
             await message.delete()
         text, markup = get_user_settings_markup(chat, user)
         await message.answer(
-            _("Bedtime reminder changed to {time}").format(time=time),
+            _("Bedtime reminder changed to {time}").format(time=time.format("HH:mm")),
             reply_markup=markup,
         )
         await state.set_data({})

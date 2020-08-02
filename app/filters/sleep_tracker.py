@@ -13,7 +13,7 @@ class UserAwakeFilter(BoundFilter):
     key = "user_awake"
     user_awake: bool
 
-    async def check(self, obj) -> bool:
+    async def check(self, obj=None) -> bool:
         data = ctx_data.get()
         user: User = data["user"]
         record = await SleepRecord.query.where(

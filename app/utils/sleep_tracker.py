@@ -1,20 +1,26 @@
-from typing import List, Union
+from typing import List
 
 import pendulum
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 from aiogram.utils.markdown import hbold
 from loguru import logger
-from pendulum import DateTime, Duration, Period, Time
-from pendulum.tz.timezone import FixedTimezone
+from pendulum import DateTime, Duration, Period
 
 from app.middlewares.i18n import i18n
 from app.models.sleep_record import SleepRecord
+from app.utils.time import (
+    as_day,
+    as_short_date,
+    as_time,
+    as_weekday,
+    as_weekday_int,
+    latenight_offset,
+)
 
 _ = i18n.gettext
-datetime_fmtr = pendulum.Formatter()
-latenight_offset = Duration(hours=5)
 cb_moods = CallbackData("user", "record_id", "mood", "emoji")
+cb_sleep = CallbackData("user", "action")
 
 
 def get_moods_markup(record_id) -> InlineKeyboardMarkup:
@@ -38,6 +44,18 @@ def get_moods_markup(record_id) -> InlineKeyboardMarkup:
                 for mood, emoji in moods
             ]
             for moods in moods_rows
+        ]
+    )
+
+
+def get_sleep_markup(text: str, action: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=text, callback_data=cb_sleep.new(action=action),
+                )
+            ]
         ]
     )
 
@@ -120,62 +138,3 @@ def get_average_sleep(records: List[SleepRecord], tz, language, mode="week", day
         / max(len(grouped_by_day), 1)
     )
     return avg_sleep_per_day
-
-
-def parse_timezone(timezone: str) -> Union[FixedTimezone, None]:
-    try:
-        sign = timezone[0]
-        if sign not in ["-", "+"]:
-            raise ValueError
-        offset = duration_from_timezone(timezone)
-        return pendulum.tz.fixed_timezone(int(sign + "1") * offset.in_seconds())
-    except ValueError as e:
-        logger.info(f"Wrong timezone format: {timezone}")
-        raise e
-
-
-def duration_from_timezone(timezone: Union[FixedTimezone, str]) -> Duration:
-    if isinstance(timezone, FixedTimezone):
-        timezone = timezone.name
-    hours, *minutes = timezone[1:].split(":", maxsplit=1)
-    minutes = minutes[-1] if minutes else "0"
-    duration = pendulum.Duration(hours=int(hours), minutes=int(minutes))
-    return duration
-
-
-def parse_time(time: str) -> Union[Time, None]:
-    try:
-        hours, *minutes = time.split(":", maxsplit=1)
-        minutes = minutes[-1] if minutes else "0"
-        return pendulum.Time(hour=int(hours), minute=int(minutes))
-    except ValueError as e:
-        logger.info(f"Wrong time format: {time}")
-        raise e
-
-
-def as_short_date(dt: DateTime, tz, locale):
-    return datetime_fmtr.format(dt.in_tz(tz), "D MMM", locale)
-
-
-def as_month(dt: DateTime, tz, locale):
-    return datetime_fmtr.format(dt.in_tz(tz), "MMMM YYYY", locale)
-
-
-def as_datetime(dt: DateTime, tz, locale):
-    return datetime_fmtr.format(dt.in_tz(tz), "D MMMM, dd HH:mm:ss", locale)
-
-
-def as_time(dt: DateTime, tz):
-    return datetime_fmtr.format(dt.in_tz(tz), "HH:mm:ss")
-
-
-def as_weekday(dt: DateTime, tz, locale):
-    return datetime_fmtr.format(dt.in_tz(tz), "dd", locale)
-
-
-def as_weekday_int(dt: DateTime, tz):
-    return datetime_fmtr.format(dt.in_tz(tz), "d")
-
-
-def as_day(dt: DateTime, tz):
-    return datetime_fmtr.format(dt.in_tz(tz), "D")

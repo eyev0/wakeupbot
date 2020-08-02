@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-23 12:37+0300\n"
+"POT-Creation-Date: 2020-08-02 13:01+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -81,131 +81,131 @@ msgstr "{command} - Показать это сообщение"
 msgid "{command} - User settings"
 msgstr "{command} - Настройки"
 
-#: app/handlers/chat_settings.py:47
+#: app/handlers/chat_settings.py:50
 msgid "Your current time zone: {timezone}\n"
 msgstr "Твой текущий часовой пояс: {timezone}\n"
 
-#: app/handlers/chat_settings.py:48
+#: app/handlers/chat_settings.py:51
 msgid "Enter your time zone ("
 msgstr "Введи свой часовой пояс ("
 
-#: app/handlers/chat_settings.py:49 app/handlers/chat_settings.py:85
+#: app/handlers/chat_settings.py:52 app/handlers/chat_settings.py:88
 msgid "example: "
 msgstr "Например: "
 
-#: app/handlers/chat_settings.py:58 app/handlers/chat_settings.py:94
+#: app/handlers/chat_settings.py:61 app/handlers/chat_settings.py:97
 msgid "Cancel"
 msgstr "Отмена"
 
-#: app/handlers/chat_settings.py:83
+#: app/handlers/chat_settings.py:86
 msgid "Your current bedtime reminder: {reminder}\n"
 msgstr "Текущее время напоминания о сне: {reminder}\n"
 
-#: app/handlers/chat_settings.py:84
+#: app/handlers/chat_settings.py:87
 msgid "Enter new time ("
 msgstr "Введи новое время ("
 
-#: app/handlers/chat_settings.py:118
+#: app/handlers/chat_settings.py:121
 msgid "Action cancelled"
 msgstr "Действие отменено"
 
-#: app/handlers/chat_settings.py:135
+#: app/handlers/chat_settings.py:138
 msgid "Wrong format! See examples above"
 msgstr "Неверный формат! Смотри примеры выше"
 
-#: app/handlers/chat_settings.py:145
+#: app/handlers/chat_settings.py:153
 msgid "Time zone changed to {timezone}"
 msgstr "Часовой пояс сменен на {timezone}"
 
-#: app/handlers/chat_settings.py:164
+#: app/handlers/chat_settings.py:172
 msgid "Wrong time format!"
 msgstr "Неверный формат времени!"
 
-#: app/handlers/chat_settings.py:174
+#: app/handlers/chat_settings.py:187
 msgid "Bedtime reminder changed to {time}"
 msgstr "Напоминание установлено на {time}"
 
-#: app/handlers/chat_settings.py:198
+#: app/handlers/chat_settings.py:211
 msgid "Choose chat language"
 msgstr "Выбери язык"
 
-#: app/handlers/chat_settings.py:225
+#: app/handlers/chat_settings.py:238
 msgid "Language changed to {new_language}"
 msgstr "Язык сменен на {new_language}"
 
-#: app/handlers/chat_settings.py:240
+#: app/handlers/chat_settings.py:253
 msgid "Do not disturb mode {mode}"
 msgstr "Режим 'Не беспокоить' {mode}"
 
-#: app/handlers/chat_settings.py:241
+#: app/handlers/chat_settings.py:254
 msgid "switched on"
 msgstr "включен"
 
-#: app/handlers/chat_settings.py:241
+#: app/handlers/chat_settings.py:254
 msgid "switched off"
 msgstr "выключен"
 
-#: app/handlers/chat_settings.py:255
+#: app/handlers/chat_settings.py:268
 msgid "Settings saved"
 msgstr "Настройки сохранены"
 
-#: app/handlers/sleep_tracker.py:34
+#: app/handlers/sleep_tracker.py:43
+msgid "I woke up"
+msgstr "Я проснулся"
+
+#: app/handlers/sleep_tracker.py:45
 msgid "Good night.."
 msgstr "Спокойной ночи.."
 
-#: app/handlers/sleep_tracker.py:47
+#: app/handlers/sleep_tracker.py:58
 msgid "Good morning!"
 msgstr "Доброе утро!"
 
-#: app/handlers/sleep_tracker.py:48
+#: app/handlers/sleep_tracker.py:59
 msgid "Your sleep:"
 msgstr "Сон:"
 
-#: app/handlers/sleep_tracker.py:54 app/handlers/sleep_tracker.py:157
-#: app/handlers/sleep_tracker.py:178 app/handlers/sleep_tracker.py:232
-#: app/utils/sleep_tracker.py:79
+#: app/handlers/sleep_tracker.py:65 app/handlers/sleep_tracker.py:195
+#: app/handlers/sleep_tracker.py:216 app/handlers/sleep_tracker.py:270
+#: app/utils/sleep_tracker.py:97
 msgid "{hours}h {minutes}min"
 msgstr "{hours}ч {minutes}мин"
 
-#: app/handlers/sleep_tracker.py:62
+#: app/handlers/sleep_tracker.py:75
 msgid "How do you feel?"
 msgstr "Как ты себя чувствуешь после сна?"
 
-#: app/handlers/sleep_tracker.py:79
+#: app/handlers/sleep_tracker.py:117
 msgid "Mood this morning"
 msgstr "Самочувствие этим утром"
 
-#: app/handlers/sleep_tracker.py:99 app/handlers/sleep_tracker.py:197
+#: app/handlers/sleep_tracker.py:137 app/handlers/sleep_tracker.py:235
 msgid "Wrong option! - {option}"
 msgstr "Неправильная опция! - {option}"
 
-#: app/handlers/sleep_tracker.py:116
+#: app/handlers/sleep_tracker.py:154
 msgid "Monthly stats for {month_year}: "
 msgstr "Статистика {month_year}: "
 
-#: app/handlers/sleep_tracker.py:149
-msgid "{start} - {end}: "
-msgstr ""
-
-#: app/handlers/sleep_tracker.py:155 app/handlers/sleep_tracker.py:230
+#: app/handlers/sleep_tracker.py:193 app/handlers/sleep_tracker.py:268
 msgid "Average sleep:"
 msgstr "Сна в среднем:"
 
-#: app/handlers/sleep_tracker.py:176
+#: app/handlers/sleep_tracker.py:214
 msgid "Monthly average sleep:"
 msgstr "Сна в среднем за месяц:"
 
-#: app/handlers/sleep_tracker.py:223
+#: app/handlers/sleep_tracker.py:261
 msgid "Weekly stats ({start} - {end}): "
 msgstr "Статистика за неделю ({start} - {end}): "
 
 #: app/handlers/superuser.py:26
 msgid "Successfuly changed is_superuser to {is_superuser} for user {user}"
-msgstr ""
+msgstr "is_superuser изменено на {is_superuser} для юзера {user}"
 
 #: app/handlers/superuser.py:31
 msgid "Failed to set is_superuser to {is_superuser} for user {user}"
-msgstr ""
+msgstr "Не получилось изменить is_superuser на {is_superuser} для {user}"
 
 #: app/utils/chat_settings.py:24
 msgid "Personal settings"
@@ -239,18 +239,26 @@ msgstr "Настройки чата для {chat_title}"
 msgid "{status} Join filter"
 msgstr "{status} Джоин Фильтр"
 
-#: app/utils/sleep_tracker.py:21
+#: app/utils/scheduler.py:53
+msgid "I'm going to sleep"
+msgstr "Я ложусь спать"
+
+#: app/utils/scheduler.py:56
+msgid "Hey!.. Time to sleep, my dear friend."
+msgstr "Время готовиться ко сну, мой дорогой друг.."
+
+#: app/utils/sleep_tracker.py:27
 msgid "Ok"
 msgstr "Хорошо"
 
-#: app/utils/sleep_tracker.py:22
+#: app/utils/sleep_tracker.py:28
 msgid "Well slept"
 msgstr "Бодро"
 
-#: app/utils/sleep_tracker.py:23
+#: app/utils/sleep_tracker.py:29
 msgid "Sluggish"
 msgstr "Вяло"
 
-#: app/utils/sleep_tracker.py:24
+#: app/utils/sleep_tracker.py:30
 msgid "Sleepy"
 msgstr "Сонно"

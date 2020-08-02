@@ -1,27 +1,37 @@
+import asyncio
+from contextlib import suppress
+
 import pendulum
 from aiogram import types
 from aiogram.types import InlineKeyboardMarkup
+from aiogram.utils.exceptions import MessageCantBeDeleted
 from aiogram.utils.markdown import hbold, hitalic
 from loguru import logger
 from pendulum import Period
 from sqlalchemy import and_
 
+from app.filters.sleep_tracker import UserAwakeFilter
 from app.middlewares.i18n import i18n
 from app.misc import dp
 from app.models.chat import Chat
 from app.models.sleep_record import SleepRecord
 from app.models.user import User
 from app.utils.sleep_tracker import (
-    as_datetime,
-    as_month,
-    as_short_date,
     cb_moods,
+    cb_sleep,
     get_average_sleep,
     get_moods_markup,
     get_records_stats,
-    latenight_offset,
-    parse_timezone,
+    get_sleep_markup,
     subtract_from,
+)
+from app.utils.time import (
+    VISUAL_GRACE_TIME,
+    as_datetime,
+    as_month,
+    as_short_date,
+    latenight_offset,
+    parse_tz,
 )
 
 _ = i18n.gettext
@@ -31,7 +41,9 @@ _ = i18n.gettext
 async def sleep_start(message: types.Message, user: User):
     logger.info("User {user} is going to sleep now", user=message.from_user.id)
     await SleepRecord.create(user_id=user.id)
-    await message.answer(hitalic(_("Good night..")))
+    markup = get_sleep_markup(_("I woke up"), "wakeup")
+    await asyncio.sleep(VISUAL_GRACE_TIME)
+    await message.answer(hitalic(_("Good night..")), reply_markup=markup)
 
 
 @dp.message_handler(text="+", user_awake=False)
@@ -41,7 +53,7 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
     record: SleepRecord = await SleepRecord.query.where(
         and_(SleepRecord.user_id == user.id, SleepRecord.wakeup_time == None)  # noqa
     ).gino.first()
-    tz = parse_timezone(user.timezone)
+    tz = parse_tz(user.timezone)
     interval = Period(record.created_at, now).as_interval()
     text = [
         hbold(_("Good morning!")),
@@ -57,10 +69,37 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
         ),
     ]
     await record.update(wakeup_time=now).apply()
+    await asyncio.sleep(VISUAL_GRACE_TIME)
     await message.answer("\n".join(text))
+    await asyncio.sleep(VISUAL_GRACE_TIME)
     await message.answer(
         _("How do you feel?"), reply_markup=get_moods_markup(record.id)
     )
+
+
+@dp.callback_query_handler(cb_sleep.filter())
+async def cq_user_sleep(
+    query: types.CallbackQuery, user: User, chat: Chat, callback_data: dict
+):
+
+    logger.info(
+        "User {user} pressed {action} button",
+        user=query.from_user.id,
+        action=(action := callback_data["action"]),
+    )
+    await query.answer()
+    if action == "sleep" and await UserAwakeFilter(user_awake=True).check():
+        with suppress(MessageCantBeDeleted):
+            await asyncio.sleep(VISUAL_GRACE_TIME)
+            await query.message.delete()
+        await sleep_start(query.message, user)
+    elif action == "wakeup" and await UserAwakeFilter(user_awake=False).check():
+        with suppress(MessageCantBeDeleted):
+            await asyncio.sleep(VISUAL_GRACE_TIME)
+            await query.message.delete()
+        await sleep_end(query.message, user, chat)
+    else:
+        return
 
 
 @dp.callback_query_handler(cb_moods.filter())
@@ -91,7 +130,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
         user=message.from_user.id,
         cmd=message.text,
     )
-    tz = parse_timezone(user.timezone)
+    tz = parse_tz(user.timezone)
     now = pendulum.now(tz)
     try:
         dt = subtract_from(date=now, diff=message.text, period="month")
@@ -146,7 +185,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
                 [
                     "",
                     hbold(
-                        _("{start} - {end}: ").format(
+                        "{start} - {end}: ".format(
                             start=as_short_date(start_dt, tz, chat.language),
                             end=as_short_date(end_dt, tz, chat.language),
                         )
@@ -189,7 +228,7 @@ async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
     logger.info(
         "User {user} requested weekly sleep statistics", user=message.from_user.id
     )
-    tz = parse_timezone(user.timezone)
+    tz = parse_tz(user.timezone)
     now = pendulum.now(tz)
     try:
         dt = subtract_from(date=now, diff=message.text, period="week")
