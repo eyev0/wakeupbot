@@ -29,6 +29,9 @@ async def reschedule_user_reminder_job(
     if not tz:
         tz: FixedTimezone = parse_tz(user.timezone)
     if not time:
+        if user.reminder == "-":
+            # no reminder set for user, no need to reschedule job
+            return
         time: DateTime = parse_time(user.reminder)
     logger.info(f"Time: {time.to_time_string()}, tz: {tz.name}")
 
