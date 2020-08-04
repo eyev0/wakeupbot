@@ -4,8 +4,8 @@
 from .apscheduler import APSchedulerJob
 from .chat import Chat
 from .db import db
-from .reminder import ReminderJob
+from .reminder import Reminder
 from .sleep_record import SleepRecord
 from .user import User
 
-__all__ = ("db", "User", "Chat", "SleepRecord", "APSchedulerJob", "ReminderJob")
+__all__ = ("db", "User", "Chat", "SleepRecord", "APSchedulerJob", "Reminder")

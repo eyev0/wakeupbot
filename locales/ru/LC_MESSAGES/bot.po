@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-03 08:10+0300\n"
+"POT-Creation-Date: 2020-08-04 12:07+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -81,71 +81,51 @@ msgstr "{command} - Показать это сообщение"
 msgid "{command} - User settings"
 msgstr "{command} - Настройки"
 
-#: app/handlers/chat_settings.py:50
-msgid "Your current time zone: {timezone}\n"
-msgstr "Твой текущий часовой пояс: {timezone}\n"
-
-#: app/handlers/chat_settings.py:51
-msgid "Enter your time zone ("
-msgstr "Введи свой часовой пояс ("
-
-#: app/handlers/chat_settings.py:52 app/handlers/chat_settings.py:88
-msgid "example: "
-msgstr "Например: "
-
-#: app/handlers/chat_settings.py:61 app/handlers/chat_settings.py:97
-msgid "Cancel"
-msgstr "Отмена"
-
-#: app/handlers/chat_settings.py:86
-msgid "Your current bedtime reminder: {reminder}\n"
-msgstr "Текущее время напоминания о сне: {reminder}\n"
-
 #: app/handlers/chat_settings.py:87
-msgid "Enter new time ("
-msgstr "Введи новое время ("
-
-#: app/handlers/chat_settings.py:121
 msgid "Action cancelled"
 msgstr "Действие отменено"
 
-#: app/handlers/chat_settings.py:138
+#: app/handlers/chat_settings.py:108
+msgid "Reminder reset"
+msgstr "Напоминание удалено"
+
+#: app/handlers/chat_settings.py:125
 msgid "Wrong format! See examples above"
 msgstr "Неверный формат! Смотри примеры выше"
 
-#: app/handlers/chat_settings.py:153
+#: app/handlers/chat_settings.py:140
 msgid "Time zone changed to {timezone}"
 msgstr "Часовой пояс сменен на {timezone}"
 
-#: app/handlers/chat_settings.py:172
+#: app/handlers/chat_settings.py:159
 msgid "Wrong time format!"
 msgstr "Неверный формат времени!"
 
-#: app/handlers/chat_settings.py:187
+#: app/handlers/chat_settings.py:174
 msgid "Bedtime reminder changed to {time}"
 msgstr "Напоминание установлено на {time}"
 
-#: app/handlers/chat_settings.py:211
+#: app/handlers/chat_settings.py:198
 msgid "Choose chat language"
 msgstr "Выбери язык"
 
-#: app/handlers/chat_settings.py:238
+#: app/handlers/chat_settings.py:225
 msgid "Language changed to {new_language}"
 msgstr "Язык сменен на {new_language}"
 
-#: app/handlers/chat_settings.py:253
+#: app/handlers/chat_settings.py:240
 msgid "Do not disturb mode {mode}"
 msgstr "Режим 'Не беспокоить' {mode}"
 
-#: app/handlers/chat_settings.py:254
+#: app/handlers/chat_settings.py:241
 msgid "switched on"
 msgstr "включен"
 
-#: app/handlers/chat_settings.py:254
+#: app/handlers/chat_settings.py:241
 msgid "switched off"
 msgstr "выключен"
 
-#: app/handlers/chat_settings.py:268
+#: app/handlers/chat_settings.py:255
 msgid "Settings saved"
 msgstr "Настройки сохранены"
 
@@ -239,11 +219,39 @@ msgstr "Настройки чата для {chat_title}"
 msgid "{status} Join filter"
 msgstr "{status} Джоин Фильтр"
 
-#: app/utils/scheduler.py:56
+#: app/utils/chat_settings.py:122
+msgid "Your current bedtime reminder: {reminder}\n"
+msgstr "Текущее время напоминания о сне: {reminder}\n"
+
+#: app/utils/chat_settings.py:123
+msgid "Enter new time ("
+msgstr "Введи новое время ("
+
+#: app/utils/chat_settings.py:124 app/utils/chat_settings.py:147
+msgid "example: "
+msgstr "Например: "
+
+#: app/utils/chat_settings.py:132
+msgid "Reset"
+msgstr "Сбросить"
+
+#: app/utils/chat_settings.py:136 app/utils/chat_settings.py:155
+msgid "Cancel"
+msgstr "Отмена"
+
+#: app/utils/chat_settings.py:145
+msgid "Your current time zone: {timezone}\n"
+msgstr "Твой текущий часовой пояс: {timezone}\n"
+
+#: app/utils/chat_settings.py:146
+msgid "Enter your time zone ("
+msgstr "Введи свой часовой пояс ("
+
+#: app/utils/scheduler.py:61
 msgid "I'm going to sleep"
 msgstr "Я ложусь спать"
 
-#: app/utils/scheduler.py:59
+#: app/utils/scheduler.py:64
 msgid "Hey!.. Time to sleep, my dear friend."
 msgstr "Время готовиться ко сну, мой дорогой друг.."
 

@@ -3,7 +3,7 @@ from typing import Tuple
 from aiogram import types
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
-from aiogram.utils.markdown import hbold
+from aiogram.utils.markdown import hbold, hcode, hitalic
 
 from app.middlewares.i18n import i18n
 from app.models.chat import Chat
@@ -115,3 +115,45 @@ def get_chat_settings_markup(
             ]
         ),
     )
+
+
+async def get_bedtime_reminder_markup(user):
+    text = [
+        _("Your current bedtime reminder: {reminder}\n").format(reminder=user.reminder),
+        _("Enter new time ("),
+        hitalic(_("example: ")),
+        hcode("21,22:30"),
+        "):",
+    ]
+    markup = types.InlineKeyboardMarkup()
+    callback_factory = cb_user_settings.new
+    markup.add(
+        types.InlineKeyboardButton(
+            _("Reset"),
+            callback_data=callback_factory(property="bedtime_reminder", value="reset"),
+        ),
+        types.InlineKeyboardButton(
+            _("Cancel"),
+            callback_data=callback_factory(property="bedtime_reminder", value="cancel"),
+        ),
+    )
+    return markup, text
+
+
+async def get_timezone_markup(user):
+    text = [
+        _("Your current time zone: {timezone}\n").format(timezone=user.timezone),
+        _("Enter your time zone ("),
+        hitalic(_("example: ")),
+        hcode("+1,+10:00,-3:30"),
+        "):",
+    ]
+    markup = types.InlineKeyboardMarkup()
+    callback_factory = cb_user_settings.new
+    markup.add(
+        types.InlineKeyboardButton(
+            _("Cancel"),
+            callback_data=callback_factory(property="time_zone", value="cancel"),
+        )
+    )
+    return markup, text
