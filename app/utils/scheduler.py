@@ -69,7 +69,6 @@ async def bedtime_reminder(user: User):
 
 async def on_startup(dispatcher: Dispatcher):
     logger.info("Configuring scheduler..")
-
     jobstores = {"default": SQLAlchemyJobStore(url=config.POSTGRES_URI)}
     job_defaults = {"misfire_grace_time": 300}
     scheduler.configure(
@@ -81,7 +80,6 @@ async def on_startup(dispatcher: Dispatcher):
 
 async def on_shutdown(dispatcher: Dispatcher):
     logger.info("Shutting down scheduler..")
-
     scheduler.shutdown()
 
 
