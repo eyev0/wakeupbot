@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-04 12:07+0300\n"
+"POT-Creation-Date: 2020-08-06 15:04+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -71,51 +71,51 @@ msgstr ""
 msgid "{command} - User settings"
 msgstr ""
 
-#: app/handlers/chat_settings.py:87
+#: app/handlers/chat_settings.py:85
 msgid "Action cancelled"
 msgstr ""
 
-#: app/handlers/chat_settings.py:108
+#: app/handlers/chat_settings.py:107
 msgid "Reminder reset"
 msgstr ""
 
-#: app/handlers/chat_settings.py:125
+#: app/handlers/chat_settings.py:124
 msgid "Wrong format! See examples above"
 msgstr ""
 
-#: app/handlers/chat_settings.py:140
+#: app/handlers/chat_settings.py:139
 msgid "Time zone changed to {timezone}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:159
+#: app/handlers/chat_settings.py:158
 msgid "Wrong time format!"
 msgstr ""
 
-#: app/handlers/chat_settings.py:174
+#: app/handlers/chat_settings.py:173
 msgid "Bedtime reminder changed to {time}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:198
+#: app/handlers/chat_settings.py:195
 msgid "Choose chat language"
 msgstr ""
 
-#: app/handlers/chat_settings.py:225
+#: app/handlers/chat_settings.py:222
 msgid "Language changed to {new_language}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:240
+#: app/handlers/chat_settings.py:235
 msgid "Do not disturb mode {mode}"
 msgstr ""
 
-#: app/handlers/chat_settings.py:241
+#: app/handlers/chat_settings.py:236
 msgid "switched on"
 msgstr ""
 
-#: app/handlers/chat_settings.py:241
+#: app/handlers/chat_settings.py:236
 msgid "switched off"
 msgstr ""
 
-#: app/handlers/chat_settings.py:255
+#: app/handlers/chat_settings.py:250
 msgid "Settings saved"
 msgstr ""
 
