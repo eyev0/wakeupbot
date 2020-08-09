@@ -1,5 +1,3 @@
-import asyncio
-
 import aiohttp
 from aiogram import Bot, Dispatcher, types
 from loguru import logger

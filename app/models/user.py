@@ -14,11 +14,8 @@ class User(TimedBaseModel):
     locale = db.Column(db.String)
     timezone = db.Column(db.String, default="+00:00")
     reminder = db.Column(db.String, default="-")
+
     is_superuser = db.Column(db.Boolean, server_default=expression.false())
-
-    first_name = db.Column(db.String)
-    last_name = db.Column(db.String)
-
     conversation_started = db.Column(db.Boolean, server_default=expression.true())
     active = db.Column(db.Boolean, server_default=expression.true())
     do_not_disturb = db.Column(db.Boolean, server_default=expression.true())
