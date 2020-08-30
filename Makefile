@@ -134,10 +134,10 @@ docker-ps:
 docker-build:
 	docker-compose build
 
-docker-db:
+db:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d db redis
 
-docker-db-stop:
+db-stop:
 	docker-compose stop db redis
 
 docker-up:
