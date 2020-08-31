@@ -18,10 +18,6 @@ scheduler = AsyncIOScheduler()
 JOBSTORE_DEFAULT = "default"
 
 
-async def bedtime_reminder():
-    pass
-
-
 async def execute_job_func(func, *args):
     return await func(*args)
 
@@ -49,7 +45,7 @@ def setup(executor: Executor):
 
 
 async def update_jobs_callables(s: AsyncIOScheduler, jobstore):
-    logger.info("Migrationg jobs for scheduler")
+    logger.info("Migrating jobs for scheduler")
     for reminder in await BedtimeReminder.query.gino.all():
         user: User = await User.get(reminder.user_id)
         s.modify_job(
