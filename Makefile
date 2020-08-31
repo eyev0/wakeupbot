@@ -121,6 +121,9 @@ start:
 	$(MAKE) _beforeStart
 	$(MAKE) _app
 
+git-pull:
+	git pull origin
+
 # =================================================================================================
 # Docker
 # =================================================================================================
@@ -162,6 +165,8 @@ docker-logs:
 app-create: _beforeStart db-stop docker-build docker-stop docker-up
 
 app-recreate: app-down app-create
+
+app-deploy: git-pull app-recreate
 
 app-logs:
 	$(MAKE) docker-logs args="bot"
