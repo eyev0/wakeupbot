@@ -18,6 +18,10 @@ scheduler = AsyncIOScheduler()
 JOBSTORE_DEFAULT = "default"
 
 
+async def bedtime_reminder():
+    pass
+
+
 async def execute_job_func(func, *args):
     return await func(*args)
 
