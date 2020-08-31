@@ -9,9 +9,9 @@ from app.misc import bot
 from app.models.reminders import WakeupReminder
 from app.models.user import User
 
-SLEEP_HOURS = 0
-SLEEP_MINUTES = 0
-SLEEP_SECONDS = 30
+SLEEP_HOURS = 6
+SLEEP_MINUTES = 30
+SLEEP_SECONDS = 0
 sleep_duration = Duration(
     hours=SLEEP_HOURS, minutes=SLEEP_MINUTES, seconds=SLEEP_SECONDS
 )
