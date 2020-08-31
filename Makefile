@@ -35,11 +35,11 @@ install-env:
 install-hooks:
 	$(py) pre-commit install
 
-install-db: docker-db
+install-db: db
 	sleep 3
 	$(shell mkdir ./migrations/versions)
 	$(MAKE) upgrade-db
-	$(MAKE) docker-db-stop
+	$(MAKE) db-stop
 
 install-texts:
 	$(shell mkdir ./locales)
@@ -112,7 +112,7 @@ migration:
 downgrade-db:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic downgrade -1
 
-_beforeStart: docker-db upgrade-db texts-compile requirements
+_beforeStart: db upgrade-db texts-compile requirements
 
 _app:
 	$(py) python -m core
@@ -159,7 +159,7 @@ docker-logs:
 # Application in Docker
 # =================================================================================================
 
-app-create: _beforeStart docker-db-stop docker-build docker-stop docker-up
+app-create: _beforeStart db-stop docker-build docker-stop docker-up
 
 app-recreate: app-down app-create
 
