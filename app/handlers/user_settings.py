@@ -12,30 +12,29 @@ from pendulum import DateTime
 
 from app.middlewares.i18n import i18n
 from app.misc import bot, dp
-from app.models.chat import Chat
 from app.models.user import User
 from app.utils import scheduler
-from app.utils.chat_settings import (
+from app.utils.states import States
+from app.utils.time import VISUAL_GRACE_TIME, parse_time, parse_tz
+from app.utils.user_settings import (
     cb_user_settings,
     get_bedtime_reminder_markup,
     get_timezone_markup,
     get_user_settings_markup,
 )
-from app.utils.states import States
-from app.utils.time import VISUAL_GRACE_TIME, parse_time, parse_tz
 
 _ = i18n.gettext
 
 
 @dp.message_handler(commands=["settings"])
-async def cmd_settings(message: types.Message, chat: Chat, user: User):
+async def cmd_settings(message: types.Message, user: User):
     logger.info(
-        "User {user} wants to configure chat {chat}", user=user.id, chat=chat.id
+        "User {user} wants to configure chat {chat}", user=user.id, chat=user.id
     )
     with suppress(MessageCantBeDeleted):
         await message.delete()
 
-    text, markup = get_user_settings_markup(chat, user)
+    text, markup = get_user_settings_markup(user)
     await bot.send_message(chat_id=user.id, text=text, reply_markup=markup)
 
 
@@ -71,11 +70,7 @@ async def cq_bedtime_reminder(
 
 @dp.callback_query_handler(cb_user_settings.filter(value="cancel"), state=any_state)
 async def cq_cancel_timezone(
-    query: types.CallbackQuery,
-    chat: Chat,
-    user: User,
-    callback_data: dict,
-    state: FSMContext,
+    query: types.CallbackQuery, user: User, callback_data: dict, state: FSMContext,
 ):
     logger.info(
         "User {user} cancelled action {action}",
@@ -83,7 +78,7 @@ async def cq_cancel_timezone(
         action=callback_data["property"],
     )
     await query.answer(_("Action cancelled"))
-    text, markup = get_user_settings_markup(chat, user)
+    text, markup = get_user_settings_markup(user)
     with suppress(MessageNotModified):
         await query.message.edit_text(text, reply_markup=markup)
     await default_state.set()
@@ -93,11 +88,7 @@ async def cq_cancel_timezone(
     cb_user_settings.filter(property="bedtime_reminder", value="reset"), state=any_state
 )
 async def cq_reset_reminder(
-    query: types.CallbackQuery,
-    chat: Chat,
-    user: User,
-    callback_data: dict,
-    state: FSMContext,
+    query: types.CallbackQuery, user: User, callback_data: dict, state: FSMContext,
 ):
     logger.info(
         "User {user} reset his reminder", user=query.from_user.id,
@@ -105,16 +96,14 @@ async def cq_reset_reminder(
     await user.update(reminder="-").apply()
     await scheduler.delete_bedtime_reminder(user)
     await query.answer(_("Reminder reset"))
-    text, markup = get_user_settings_markup(chat, user)
+    text, markup = get_user_settings_markup(user)
     with suppress(MessageNotModified):
         await query.message.edit_text(text, reply_markup=markup)
     await default_state.set()
 
 
 @dp.message_handler(state=[States.SET_TIMEZONE], content_types=ContentTypes.TEXT)
-async def set_timezone(
-    message: types.Message, chat: Chat, user: User, state: FSMContext
-):
+async def set_timezone(message: types.Message, user: User, state: FSMContext):
     logger.info(
         "User {user} wants to set his timezone preference", user=message.from_user.id,
     )
@@ -130,11 +119,11 @@ async def set_timezone(
     if original_message_id := state_data.get("original_message_id"):
         with suppress(MessageCantBeDeleted):
             await asyncio.sleep(VISUAL_GRACE_TIME)
-            await bot.delete_message(chat.id, original_message_id)
+            await bot.delete_message(user.id, original_message_id)
         with suppress(MessageCantBeDeleted):
             await asyncio.sleep(VISUAL_GRACE_TIME)
             await message.delete()
-        text, markup = get_user_settings_markup(chat, user)
+        text, markup = get_user_settings_markup(user)
         await message.answer(
             _("Time zone changed to {timezone}").format(timezone=tz.name),
             reply_markup=markup,
@@ -146,9 +135,7 @@ async def set_timezone(
 @dp.message_handler(
     state=[States.SET_BEDTIME_REMINDER], content_types=ContentTypes.TEXT
 )
-async def set_bedtime_reminder(
-    message: types.Message, chat: Chat, user: User, state: FSMContext
-):
+async def set_bedtime_reminder(message: types.Message, user: User, state: FSMContext):
     logger.info(
         "User {user} wants to set his bedtime reminder", user=message.from_user.id,
     )
@@ -164,11 +151,11 @@ async def set_bedtime_reminder(
     if original_message_id := state_data.get("original_message_id"):
         with suppress(MessageCantBeDeleted):
             await asyncio.sleep(VISUAL_GRACE_TIME)
-            await bot.delete_message(chat.id, original_message_id)
+            await bot.delete_message(user.id, original_message_id)
         with suppress(MessageCantBeDeleted):
             await asyncio.sleep(VISUAL_GRACE_TIME)
             await message.delete()
-        text, markup = get_user_settings_markup(chat, user)
+        text, markup = get_user_settings_markup(user)
         await message.answer(
             _("Bedtime reminder changed to {time}").format(time=time.format("HH:mm")),
             reply_markup=markup,
@@ -205,19 +192,19 @@ async def cq_language(query: types.CallbackQuery, callback_data: dict):
     )
 )
 async def cq_choose_language(
-    query: types.CallbackQuery, chat: Chat, user: User, callback_data: dict
+    query: types.CallbackQuery, user: User, callback_data: dict
 ):
     target_language = callback_data["value"]
     logger.info(
         "User {user} set language in chat {chat} to '{language}'",
         user=query.from_user.id,
-        chat=chat.id,
+        chat=user.id,
         language=target_language,
     )
 
     i18n.ctx_locale.set(target_language)
-    await chat.update(language=target_language).apply()
-    text, markup = get_user_settings_markup(chat, user)
+    await user.update(language=target_language).apply()
+    text, markup = get_user_settings_markup(user)
     await query.answer(
         _("Language changed to {new_language}").format(
             new_language=i18n.AVAILABLE_LANGUAGES[target_language].title
@@ -229,7 +216,7 @@ async def cq_choose_language(
 @dp.callback_query_handler(
     cb_user_settings.filter(property="do_not_disturb", value="switch")
 )
-async def cq_do_not_disturb(query: types.CallbackQuery, user: User, chat: Chat):
+async def cq_do_not_disturb(query: types.CallbackQuery, user: User):
     logger.info("User {user} switched DND mode", user=query.from_user.id)
     await query.answer(
         _("Do not disturb mode {mode}").format(
@@ -237,7 +224,7 @@ async def cq_do_not_disturb(query: types.CallbackQuery, user: User, chat: Chat):
         )
     )
     await user.update(do_not_disturb=not user.do_not_disturb).apply()
-    text, markup = get_user_settings_markup(chat, user)
+    text, markup = get_user_settings_markup(user)
     with suppress(MessageNotModified):
         await query.message.edit_text(text, reply_markup=markup)
 

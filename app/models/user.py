@@ -10,11 +10,9 @@ class User(TimedBaseModel):
 
     id = db.Column(db.Integer, primary_key=True, index=True, unique=True)
     username = db.Column(db.String)
-
-    locale = db.Column(db.String)
+    language = db.Column(db.String(12), default="ru")
     timezone = db.Column(db.String, default="+00:00")
     reminder = db.Column(db.String, default="-")
-
     is_superuser = db.Column(db.Boolean, server_default=expression.false())
     conversation_started = db.Column(db.Boolean, server_default=expression.true())
     active = db.Column(db.Boolean, server_default=expression.true())

@@ -2,10 +2,9 @@
 # imported by Alembic
 
 from .apscheduler import APSchedulerJob
-from .chat import Chat
 from .db import db
 from .reminder import BedtimeReminder
 from .sleep_record import SleepRecord
 from .user import User
 
-__all__ = ("db", "User", "Chat", "SleepRecord", "APSchedulerJob", "BedtimeReminder")
+__all__ = ("db", "User", "SleepRecord", "APSchedulerJob", "BedtimeReminder")

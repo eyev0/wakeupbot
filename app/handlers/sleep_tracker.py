@@ -13,7 +13,6 @@ from sqlalchemy import and_
 from app.filters.sleep_tracker import UserAwakeFilter
 from app.middlewares.i18n import i18n
 from app.misc import dp
-from app.models.chat import Chat
 from app.models.sleep_record import SleepRecord
 from app.models.user import User
 from app.utils.scheduler import schedule_wakeup_reminder
@@ -49,7 +48,7 @@ async def sleep_start(message: types.Message, user: User):
 
 
 @dp.message_handler(text="+", user_awake=False)
-async def sleep_end(message: types.Message, user: User, chat: Chat):
+async def sleep_end(message: types.Message, user: User):
     logger.info("User {user} is waking up now", user=user.id)
     now = pendulum.now()
     record: SleepRecord = await SleepRecord.query.where(
@@ -60,9 +59,9 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
     text = [
         hbold(_("Good morning!")),
         _("Your sleep:"),
-        f"{as_datetime(pendulum.instance(record.created_at), tz, chat.language)}"
+        f"{as_datetime(pendulum.instance(record.created_at), tz, user.language)}"
         + " - "
-        + f"{as_datetime(now, tz, chat.language)}"
+        + f"{as_datetime(now, tz, user.language)}"
         + " -- "
         + hbold(
             _("{hours}h {minutes}min").format(
@@ -81,7 +80,7 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
 
 @dp.callback_query_handler(cb_sleep_or_wakeup.filter())
 async def cq_user_sleep_or_wakeup(
-    query: types.CallbackQuery, user: User, chat: Chat, callback_data: dict
+    query: types.CallbackQuery, user: User, callback_data: dict
 ):
 
     logger.info(
@@ -99,7 +98,7 @@ async def cq_user_sleep_or_wakeup(
         with suppress(MessageCantBeDeleted):
             await asyncio.sleep(VISUAL_GRACE_TIME)
             await query.message.delete()
-        await sleep_end(query.message, user, chat)
+        await sleep_end(query.message, user)
     else:
         return
 
@@ -126,7 +125,7 @@ async def cq_user_wakeup_mood(
 
 @dp.message_handler(text_startswith="!м")
 @dp.message_handler(text_startswith="!m")
-async def sleep_statistics_month(message: types.Message, user: User, chat: Chat):
+async def sleep_statistics_month(message: types.Message, user: User):
     logger.info(
         "User {user} requested monthly sleep statistics, command - {cmd}",
         user=message.from_user.id,
@@ -155,7 +154,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
     text = [
         hbold(
             _("Monthly stats for {month_year}: ").format(
-                month_year=as_month(dt, tz, chat.language)
+                month_year=as_month(dt, tz, user.language)
             )
         ),
     ]
@@ -181,15 +180,15 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
         )
         if weekly_records:
             monthly_records.extend(weekly_records)
-            explicit_stats = get_records_stats(weekly_records, tz, chat.language)
-            avg_sleep_per_day = get_average_sleep(weekly_records, tz, chat.language)
+            explicit_stats = get_records_stats(weekly_records, tz, user.language)
+            avg_sleep_per_day = get_average_sleep(weekly_records, tz, user.language)
             text.extend(
                 [
                     "",
                     hbold(
                         "{start} - {end}: ".format(
-                            start=as_short_date(start_dt, tz, chat.language),
-                            end=as_short_date(end_dt, tz, chat.language),
+                            start=as_short_date(start_dt, tz, user.language),
+                            end=as_short_date(end_dt, tz, user.language),
                         )
                     ),
                     *explicit_stats,
@@ -208,7 +207,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
         end_dt = end_dt.add(weeks=1)
 
     avg_sleep_per_day = get_average_sleep(
-        monthly_records, tz, chat.language, mode="month", days=start_dt.days_in_month
+        monthly_records, tz, user.language, mode="month", days=start_dt.days_in_month
     )
 
     text.extend(
@@ -226,7 +225,7 @@ async def sleep_statistics_month(message: types.Message, user: User, chat: Chat)
 
 
 @dp.message_handler(text_startswith="!")
-async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
+async def sleep_statistics_week(message: types.Message, user: User):
     logger.info(
         "User {user} requested weekly sleep statistics", user=message.from_user.id
     )
@@ -256,14 +255,14 @@ async def sleep_statistics_week(message: types.Message, user: User, chat: Chat):
         .gino.all()
     )
 
-    explicit_stats = get_records_stats(weekly_records, tz, chat.language)
-    avg_sleep_per_day = get_average_sleep(weekly_records, tz, chat.language)
+    explicit_stats = get_records_stats(weekly_records, tz, user.language)
+    avg_sleep_per_day = get_average_sleep(weekly_records, tz, user.language)
 
     text = [
         hbold(
             _("Weekly stats ({start} - {end}): ").format(
-                start=as_short_date(start_dt, tz, chat.language),
-                end=as_short_date(end_dt, tz, chat.language),
+                start=as_short_date(start_dt, tz, user.language),
+                end=as_short_date(end_dt, tz, user.language),
             )
         ),
         "",

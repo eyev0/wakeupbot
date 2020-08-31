@@ -6,5 +6,5 @@ isort:skip_file
 
 from . import base
 from . import superuser
-from . import chat_settings
+from . import user_settings
 from . import sleep_tracker

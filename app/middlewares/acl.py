@@ -5,7 +5,6 @@ from aiogram.dispatcher.handler import CancelHandler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from loguru import logger
 
-from app.models.chat import Chat
 from app.models.user import User
 
 
@@ -15,7 +14,6 @@ class ACLMiddleware(BaseMiddleware):
         data: dict, user: types.User, chat: Optional[types.Chat] = None
     ):
         user_id = user.id
-        chat_id = chat.id if chat else user.id
         chat_type = chat.type if chat else "private"
 
         if chat_type != "private":
@@ -29,13 +27,8 @@ class ACLMiddleware(BaseMiddleware):
         if user is None:
             user = await User.create(id=user_id)
             logger.info("User {user} created!", user=user)
-        chat = await Chat.get(chat_id)
-        if chat is None:
-            chat = await Chat.create(id=chat_id, type=chat_type)
-            logger.info("Chat {chat} created!", chat=chat)
 
         data["user"] = user
-        data["chat"] = chat
 
     async def on_pre_process_message(self, message: types.Message, data: dict):
         await self.setup_chat(data, message.from_user, message.chat)
