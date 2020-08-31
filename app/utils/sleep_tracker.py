@@ -20,7 +20,7 @@ from app.utils.time import (
 
 _ = i18n.gettext
 cb_moods = CallbackData("user", "record_id", "mood", "emoji")
-cb_sleep = CallbackData("user", "action")
+cb_sleep_or_wakeup = CallbackData("user", "action")
 
 
 def get_moods_markup(record_id) -> InlineKeyboardMarkup:
@@ -53,7 +53,7 @@ def get_sleep_markup(text: str, action: str) -> InlineKeyboardMarkup:
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=text, callback_data=cb_sleep.new(action=action),
+                    text=text, callback_data=cb_sleep_or_wakeup.new(action=action),
                 )
             ]
         ]

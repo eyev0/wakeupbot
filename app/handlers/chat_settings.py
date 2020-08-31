@@ -103,7 +103,7 @@ async def cq_reset_reminder(
         "User {user} reset his reminder", user=query.from_user.id,
     )
     await user.update(reminder="-").apply()
-    await scheduler.reschedule_reminder_job(user)
+    await scheduler.delete_bedtime_reminder(user)
     await query.answer(_("Reminder reset"))
     text, markup = get_user_settings_markup(chat, user)
     with suppress(MessageNotModified):
@@ -124,7 +124,7 @@ async def set_timezone(
         await message.answer(_("Wrong format! See examples above"))
         return
     await user.update(timezone=tz.name).apply()
-    await scheduler.reschedule_reminder_job(user, tz=tz)
+    await scheduler.schedule_bedtime_reminder(user, tz=tz)
 
     state_data = await state.get_data() or {}
     if original_message_id := state_data.get("original_message_id"):
@@ -158,7 +158,7 @@ async def set_bedtime_reminder(
         await message.answer(_("Wrong time format!"))
         return
     await user.update(reminder=time.format("HH:mm")).apply()
-    await scheduler.reschedule_reminder_job(user, time=time)
+    await scheduler.schedule_bedtime_reminder(user, time=time)
 
     state_data = await state.get_data() or {}
     if original_message_id := state_data.get("original_message_id"):

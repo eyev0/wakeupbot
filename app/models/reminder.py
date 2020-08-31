@@ -3,5 +3,9 @@ from app.models.db import TimedBaseModel
 from app.models.user import UserRelatedModel
 
 
-class Reminder(APSchedulerJobsRelatedModel, UserRelatedModel, TimedBaseModel):
-    __tablename__ = "reminders"
+class BedtimeReminder(APSchedulerJobsRelatedModel, UserRelatedModel, TimedBaseModel):
+    __tablename__ = "bedtime_reminders"
+
+
+class WakeupReminder(APSchedulerJobsRelatedModel, UserRelatedModel, TimedBaseModel):
+    __tablename__ = "wakeup_reminders"

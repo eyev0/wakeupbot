@@ -16,9 +16,10 @@ from app.misc import dp
 from app.models.chat import Chat
 from app.models.sleep_record import SleepRecord
 from app.models.user import User
+from app.utils.scheduler import schedule_wakeup_reminder
 from app.utils.sleep_tracker import (
     cb_moods,
-    cb_sleep,
+    cb_sleep_or_wakeup,
     get_average_sleep,
     get_moods_markup,
     get_records_stats,
@@ -39,8 +40,9 @@ _ = i18n.gettext
 
 @dp.message_handler(text="-", user_awake=True)
 async def sleep_start(message: types.Message, user: User):
-    logger.info("User {user} is going to sleep now", user=message.from_user.id)
+    logger.info("User {user} is going to sleep now", user=user.id)
     await SleepRecord.create(user_id=user.id)
+    await schedule_wakeup_reminder(user)
     markup = get_sleep_markup(_("I woke up"), "wakeup")
     await asyncio.sleep(VISUAL_GRACE_TIME)
     await message.answer(hitalic(_("Good night..")), reply_markup=markup)
@@ -48,7 +50,7 @@ async def sleep_start(message: types.Message, user: User):
 
 @dp.message_handler(text="+", user_awake=False)
 async def sleep_end(message: types.Message, user: User, chat: Chat):
-    logger.info("User {user} is waking up now", user=message.from_user.id)
+    logger.info("User {user} is waking up now", user=user.id)
     now = pendulum.now()
     record: SleepRecord = await SleepRecord.query.where(
         and_(SleepRecord.user_id == user.id, SleepRecord.wakeup_time == None)  # noqa
@@ -77,8 +79,8 @@ async def sleep_end(message: types.Message, user: User, chat: Chat):
     )
 
 
-@dp.callback_query_handler(cb_sleep.filter())
-async def cq_user_sleep(
+@dp.callback_query_handler(cb_sleep_or_wakeup.filter())
+async def cq_user_sleep_or_wakeup(
     query: types.CallbackQuery, user: User, chat: Chat, callback_data: dict
 ):
 

@@ -8,6 +8,8 @@ from pendulum.tz.timezone import FixedTimezone
 datetime_fmtr = pendulum.Formatter()
 latenight_offset = Duration(hours=5)
 VISUAL_GRACE_TIME = 0.1
+SLEEP_HOURS = 6
+SLEEP_MINUTES = 30
 
 
 def parse_tz(timezone: str) -> Union[FixedTimezone, None]:
