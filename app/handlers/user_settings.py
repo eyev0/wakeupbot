@@ -10,12 +10,13 @@ from aiogram.utils.exceptions import MessageCantBeDeleted, MessageNotModified
 from loguru import logger
 from pendulum import DateTime
 
+import app.utils.bedtime_reminder
 from app.middlewares.i18n import i18n
 from app.misc import bot, dp
 from app.models.user import User
 from app.utils import scheduler
+from app.utils.datetime import VISUAL_GRACE_TIME, parse_time, parse_tz
 from app.utils.states import States
-from app.utils.time import VISUAL_GRACE_TIME, parse_time, parse_tz
 from app.utils.user_settings import (
     cb_user_settings,
     get_bedtime_reminder_markup,
@@ -94,7 +95,7 @@ async def cq_reset_reminder(
         "User {user} reset his reminder", user=query.from_user.id,
     )
     await user.update(reminder="-").apply()
-    await scheduler.delete_bedtime_reminder(user)
+    await app.utils.bedtime_reminder.delete_bedtime_reminder(user)
     await query.answer(_("Reminder reset"))
     text, markup = get_user_settings_markup(user)
     with suppress(MessageNotModified):
@@ -113,7 +114,7 @@ async def set_timezone(message: types.Message, user: User, state: FSMContext):
         await message.answer(_("Wrong format! See examples above"))
         return
     await user.update(timezone=tz.name).apply()
-    await scheduler.schedule_bedtime_reminder(user, tz=tz)
+    await app.utils.bedtime_reminder.schedule_bedtime_reminder(user, tz=tz)
 
     state_data = await state.get_data() or {}
     if original_message_id := state_data.get("original_message_id"):
@@ -145,7 +146,7 @@ async def set_bedtime_reminder(message: types.Message, user: User, state: FSMCon
         await message.answer(_("Wrong time format!"))
         return
     await user.update(reminder=time.format("HH:mm")).apply()
-    await scheduler.schedule_bedtime_reminder(user, time=time)
+    await app.utils.bedtime_reminder.schedule_bedtime_reminder(user, time=time)
 
     state_data = await state.get_data() or {}
     if original_message_id := state_data.get("original_message_id"):

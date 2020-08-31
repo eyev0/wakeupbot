@@ -3,7 +3,7 @@
 
 from .apscheduler import APSchedulerJob
 from .db import db
-from .reminder import BedtimeReminder
+from .reminders import BedtimeReminder
 from .sleep_record import SleepRecord
 from .user import User
 

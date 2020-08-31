@@ -9,7 +9,7 @@ from pendulum import DateTime, Duration, Period
 
 from app.middlewares.i18n import i18n
 from app.models.sleep_record import SleepRecord
-from app.utils.time import (
+from app.utils.datetime import (
     as_day,
     as_short_date,
     as_time,

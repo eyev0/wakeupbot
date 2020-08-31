@@ -7,7 +7,8 @@ from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.exceptions import MessageCantBeDeleted
 from aiogram.utils.markdown import hbold, hitalic
 from loguru import logger
-from pendulum import Period
+from pendulum import DateTime, Period
+from pendulum.tz.timezone import FixedTimezone
 from sqlalchemy import and_
 
 from app.filters.sleep_tracker import UserAwakeFilter
@@ -15,7 +16,14 @@ from app.middlewares.i18n import i18n
 from app.misc import dp
 from app.models.sleep_record import SleepRecord
 from app.models.user import User
-from app.utils.scheduler import schedule_wakeup_reminder
+from app.utils.datetime import (
+    VISUAL_GRACE_TIME,
+    as_datetime,
+    as_month,
+    as_short_date,
+    latenight_offset,
+    parse_tz,
+)
 from app.utils.sleep_tracker import (
     cb_moods,
     cb_sleep_or_wakeup,
@@ -25,23 +33,22 @@ from app.utils.sleep_tracker import (
     get_sleep_markup,
     subtract_from,
 )
-from app.utils.time import (
-    VISUAL_GRACE_TIME,
-    as_datetime,
-    as_month,
-    as_short_date,
-    latenight_offset,
-    parse_tz,
-)
+from app.utils.wakeup_reminder import schedule_wakeup_reminder, sleep_duration
 
 _ = i18n.gettext
 
 
-@dp.message_handler(text="-", user_awake=True)
+@dp.message_handler(text="-")
 async def sleep_start(message: types.Message, user: User):
+    if await UserAwakeFilter(user_awake=False).check():
+        await message.answer(hitalic(_("Please record your previous sleep first!")))
+        return
+
     logger.info("User {user} is going to sleep now", user=user.id)
     await SleepRecord.create(user_id=user.id)
-    await schedule_wakeup_reminder(user)
+    tz: FixedTimezone = parse_tz(user.timezone)
+    time: DateTime = pendulum.now(tz).add(seconds=sleep_duration.seconds)
+    await schedule_wakeup_reminder(user, time, tz)
     markup = get_sleep_markup(_("I woke up"), "wakeup")
     await asyncio.sleep(VISUAL_GRACE_TIME)
     await message.answer(hitalic(_("Good night..")), reply_markup=markup)
@@ -90,15 +97,15 @@ async def cq_user_sleep_or_wakeup(
     )
     await query.answer()
     if action == "sleep" and await UserAwakeFilter(user_awake=True).check():
-        with suppress(MessageCantBeDeleted):
-            await asyncio.sleep(VISUAL_GRACE_TIME)
-            await query.message.delete()
         await sleep_start(query.message, user)
-    elif action == "wakeup" and await UserAwakeFilter(user_awake=False).check():
         with suppress(MessageCantBeDeleted):
             await asyncio.sleep(VISUAL_GRACE_TIME)
             await query.message.delete()
+    elif action == "wakeup" and await UserAwakeFilter(user_awake=False).check():
         await sleep_end(query.message, user)
+        with suppress(MessageCantBeDeleted):
+            await asyncio.sleep(VISUAL_GRACE_TIME)
+            await query.message.delete()
     else:
         return
 
