@@ -109,7 +109,7 @@ msgstr "{hours}ч {minutes}мин"
 
 #: app/handlers/sleep_tracker.py:84
 msgid "How do you feel?"
-msgstr "Как ты себя чувствуешь после сна?"
+msgstr "Как твое самочувствие после сна?"
 
 #: app/handlers/sleep_tracker.py:126
 msgid "Mood this morning"
@@ -201,19 +201,19 @@ msgstr "Время готовиться ко сну, мой дорогой др�
 
 #: app/utils/sleep_tracker.py:27
 msgid "Ok"
-msgstr "Хорошо"
+msgstr "Хорошее"
 
 #: app/utils/sleep_tracker.py:28
 msgid "Well slept"
-msgstr "Бодро"
+msgstr "Бодрое"
 
 #: app/utils/sleep_tracker.py:29
 msgid "Sluggish"
-msgstr "Вяло"
+msgstr "Вялое"
 
 #: app/utils/sleep_tracker.py:30
 msgid "Sleepy"
-msgstr "Сонно"
+msgstr "Сонное"
 
 #: app/utils/user_settings.py:20
 msgid "Personal settings"
