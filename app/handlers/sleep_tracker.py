@@ -40,7 +40,7 @@ _ = i18n.gettext
 
 @dp.message_handler(text="-")
 async def sleep_start(message: types.Message, user: User):
-    if await UserAwakeFilter(user_awake=False).check():
+    if await UserAwakeFilter(user_awake=False, user=user).check():
         await message.answer(hitalic(_("Please record your previous sleep first!")))
         return
 
@@ -96,12 +96,15 @@ async def cq_user_sleep_or_wakeup(
         action=(action := callback_data["action"]),
     )
     await query.answer()
-    if action == "sleep" and await UserAwakeFilter(user_awake=True).check():
+    if action == "sleep" and await UserAwakeFilter(user_awake=True, user=user).check():
         await sleep_start(query.message, user)
         with suppress(MessageCantBeDeleted):
             await asyncio.sleep(VISUAL_GRACE_TIME)
             await query.message.delete()
-    elif action == "wakeup" and await UserAwakeFilter(user_awake=False).check():
+    elif (
+        action == "wakeup"
+        and await UserAwakeFilter(user_awake=False, user=user).check()
+    ):
         await sleep_end(query.message, user)
         with suppress(MessageCantBeDeleted):
             await asyncio.sleep(VISUAL_GRACE_TIME)

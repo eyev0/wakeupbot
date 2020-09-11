@@ -15,14 +15,6 @@ SLEEP_SECONDS = 0
 sleep_duration = Duration(
     hours=SLEEP_HOURS, minutes=SLEEP_MINUTES, seconds=SLEEP_SECONDS
 )
-# REPEAT_REMINDER_HOURS = 0
-# REPEAT_REMINDER_MINUTES = 0
-# REPEAT_REMINDER_SECONDS = 30
-# repeat_reminder_duration = Duration(
-#     hours=REPEAT_REMINDER_HOURS,
-#     minutes=REPEAT_REMINDER_MINUTES,
-#     seconds=REPEAT_REMINDER_SECONDS,
-# )
 _ = i18n.gettext
 
 
@@ -44,7 +36,7 @@ async def schedule_wakeup_reminder(
 
 
 async def wakeup_reminder_func(user: User):
-    if await UserAwakeFilter(user_awake=False).check():
+    if await UserAwakeFilter(user_awake=False, user=user).check():
         logger.info(f"Sending wakeup reminder to user {user.id}")
         await bot.send_message(
             user.id, hitalic(_("Did you wake up?")), disable_notification=True,

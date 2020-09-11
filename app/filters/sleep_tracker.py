@@ -12,13 +12,16 @@ from app.models.user import User
 class UserAwakeFilter(BoundFilter):
     key = "user_awake"
     user_awake: bool
+    user: User = None
 
     async def check(self, obj=None) -> bool:
-        data = ctx_data.get()
-        user: User = data["user"]
+        if not self.user:
+            data = ctx_data.get()
+            self.user: User = data["user"]
         record = await SleepRecord.query.where(
             and_(
-                SleepRecord.user_id == user.id, SleepRecord.wakeup_time == None,  # noqa
+                SleepRecord.user_id == self.user.id,
+                SleepRecord.wakeup_time == None,  # noqa
             )
         ).gino.first()
         return (record is None) == self.user_awake

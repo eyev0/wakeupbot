@@ -60,7 +60,7 @@ async def schedule_bedtime_reminder(
 
 async def bedtime_reminder_func(user: User):
     logger.info(f"Sending bedtime reminder to user {user.id}")
-    if await UserAwakeFilter(user_awake=True).check():
+    if await UserAwakeFilter(user_awake=True, user=user).check():
         markup = get_sleep_markup(_("I'm going to sleep"), "sleep")
         await bot.send_message(
             user.id,
