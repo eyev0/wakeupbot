@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-31 15:23+0300\n"
+"POT-Creation-Date: 2020-09-13 12:06+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -91,8 +91,8 @@ msgstr ""
 msgid "Your sleep:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:74 app/handlers/sleep_tracker.py:204
-#: app/handlers/sleep_tracker.py:225 app/handlers/sleep_tracker.py:279
+#: app/handlers/sleep_tracker.py:74 app/handlers/sleep_tracker.py:207
+#: app/handlers/sleep_tracker.py:228 app/handlers/sleep_tracker.py:282
 #: app/utils/sleep_tracker.py:97
 msgid "{hours}h {minutes}min"
 msgstr ""
@@ -101,27 +101,27 @@ msgstr ""
 msgid "How do you feel?"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:126
+#: app/handlers/sleep_tracker.py:129
 msgid "Mood this morning"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:146 app/handlers/sleep_tracker.py:244
+#: app/handlers/sleep_tracker.py:149 app/handlers/sleep_tracker.py:247
 msgid "Wrong option! - {option}"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:163
+#: app/handlers/sleep_tracker.py:166
 msgid "Monthly stats for {month_year}: "
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:202 app/handlers/sleep_tracker.py:277
+#: app/handlers/sleep_tracker.py:205 app/handlers/sleep_tracker.py:280
 msgid "Average sleep:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:223
+#: app/handlers/sleep_tracker.py:226
 msgid "Monthly average sleep:"
 msgstr ""
 
-#: app/handlers/sleep_tracker.py:270
+#: app/handlers/sleep_tracker.py:273
 msgid "Weekly stats ({start} - {end}): "
 msgstr ""
 
@@ -257,7 +257,7 @@ msgstr ""
 msgid "Enter your time zone ("
 msgstr ""
 
-#: app/utils/wakeup_reminder.py:50
+#: app/utils/wakeup_reminder.py:42
 msgid "Did you wake up?"
 msgstr ""
 
