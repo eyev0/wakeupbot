@@ -24,12 +24,14 @@ cb_sleep_or_wakeup = CallbackData("user", "action")
 
 
 def get_moods_markup(record_id) -> InlineKeyboardMarkup:
-    mood_ok = (_("Ok"), "🙂")
+    mood_neutral = (_("Ok"), "😐")
+    mood_good = (_("Good"), "🙂")
     mood_well_slept = (_("Well slept"), "😃️")
     mood_sluggish = (_("Sluggish"), "😪")
     mood_sleepy = (_("Sleepy"), "😴")
     moods_rows = [
-        [mood_ok, mood_well_slept],
+        [mood_good, mood_well_slept],
+        [mood_neutral],
         [mood_sluggish, mood_sleepy],
     ]
     return InlineKeyboardMarkup(

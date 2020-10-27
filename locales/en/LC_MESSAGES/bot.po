@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wakeupbot 0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-13 12:06+0300\n"
+"POT-Creation-Date: 2020-10-27 16:12+0300\n"
 "PO-Revision-Date: 2020-07-09 13:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -93,7 +93,7 @@ msgstr ""
 
 #: app/handlers/sleep_tracker.py:74 app/handlers/sleep_tracker.py:207
 #: app/handlers/sleep_tracker.py:228 app/handlers/sleep_tracker.py:282
-#: app/utils/sleep_tracker.py:97
+#: app/utils/sleep_tracker.py:99
 msgid "{hours}h {minutes}min"
 msgstr ""
 
@@ -194,14 +194,18 @@ msgid "Ok"
 msgstr ""
 
 #: app/utils/sleep_tracker.py:28
-msgid "Well slept"
+msgid "Good"
 msgstr ""
 
 #: app/utils/sleep_tracker.py:29
-msgid "Sluggish"
+msgid "Well slept"
 msgstr ""
 
 #: app/utils/sleep_tracker.py:30
+msgid "Sluggish"
+msgstr ""
+
+#: app/utils/sleep_tracker.py:31
 msgid "Sleepy"
 msgstr ""
 
