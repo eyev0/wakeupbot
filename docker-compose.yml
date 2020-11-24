@@ -6,7 +6,7 @@ services:
             context: .
             dockerfile: Dockerfile
         image: wakeupbot:latest
-        restart: 'no'
+        restart: 'always'
         stop_signal: SIGINT
         environment:
             BOT_TOKEN:
@@ -38,7 +38,7 @@ services:
 
     db:
         image: 'postgres:alpine'
-        restart: 'no'
+        restart: 'always'
         environment:
             POSTGRES_USER:
             POSTGRES_PASSWORD:
@@ -51,7 +51,7 @@ services:
     redis:
         image: 'redis:alpine'
         command: redis-server --appendonly yes
-        restart: 'no'
+        restart: 'always'
         networks:
             - net
         volumes:
